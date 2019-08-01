@@ -1,5 +1,5 @@
-import _ from 'lodash';
+console.log('Another module has loaded! See the network tab in dev tools...');
 
-console.log(
-  _.join(['Another', 'module', 'loaded!'], ' ')
-);
+export default () => {
+  console.log('Button Clicked: Here\'s "some text"!');
+};
