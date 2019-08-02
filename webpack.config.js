@@ -1,48 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-
-// module.exports = {
-//   mode: 'development',
-//   entry: {
-//     index: './src/index.js',
-//     // print: './src/print.js',
-//     another: './src/another-module.js'
-//   },
-//   devtool: 'inline-source-map',
-//   devServer: {
-//     contentBase: './dist'
-//   },
-//   plugins: [
-//     new CleanWebpackPlugin(),
-//     new HtmlWebpackPlugin({
-//       title: 'Output Management'
-//     })
-//   ],
-//   output: {
-//     filename: '[name].bundle.js',
-//     chunkFilename: '[name].bundle.js',
-//     path: path.resolve(__dirname, 'dist')
-//   },
-//   // optimization: {
-//   //   splitChunks: {
-//   //     chunks: 'all'
-//   //   }
-//   // },
-//   module: {
-//     rules: [
-//       {
-//         test: /\.(css|scss)$/,
-//         use: [
-//           'style-loader',
-//           'css-loader',
-//           'sass-loader'
-//         ]
-//       }
-//     ]
-//   }
-// };
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'development',
@@ -50,8 +9,22 @@ module.exports = {
     index: './src/index.js',
     // another: './src/another-module.js'
   },
+  output: {
+    filename: '[name].bundle.js',
+    chunkFilename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
   module: {
     rules: [
+      {
+        test: /\.js$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      },
       {
         test: /\.(css|scss)$/,
         use: [
@@ -62,20 +35,22 @@ module.exports = {
       }
     ]
   },
+  devServer: {
+    contentBase: './dist'
+  },
+  devtool: 'inline-source-map',
+  plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      title: 'Lichter Photo'
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'kc-main.css'
+    })
+  ]
   // optimization: {
   //   splitChunks: {
   //     chunks: 'all'
   //   }
   // },
-  output: {
-    filename: '[name].bundle.js',
-    chunkFilename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist')
-  },
-  plugins: [
-    new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      title: 'Lichter Photo'
-    })
-  ]
 };
