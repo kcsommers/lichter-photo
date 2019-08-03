@@ -1,51 +1,76 @@
+import { ArlenNess } from './page-scripts/arlen-ness';
+import { Gallery } from './page-scripts/gallery';
+import { GalleryCollection } from './page-scripts/gallery-collection';
+import { Search } from './page-scripts/search';
+
 const getPage = (path) => {
+  if (/\/arlen-ness\//.test(path)) {
+    ArlenNess();
+    return 'arlen-ness';
+  }
   if (/\/gallery-collection\//.test(path)) {
+    GalleryCollection();
     return (path.match(/By-Builder/)) ? 'gallery-collection' : null;
   }
   if (/\/gallery\//.test(path)) {
+    Gallery(path);
     return 'gallery';
   }
   if (/\/search?/.test(path)) {
+    Search(path);
     return 'search';
   }
   return null;
 };
 
-const loadScript = async (page) => {
-  switch (page) {
-    case 'gallery': {
-      const { default: script } = await import(
-        /* webpackChunkName: "GalleryScript" */
-        './page-scripts/gallery'
-      );
-      return script;
-    }
-    case 'search': {
-      const { default: script } = await import(
-        /* webpackChunkName: "SearchScript" */
-        './page-scripts/search'
-      );
-      return script;
-    }
-    case 'gallery-collection': {
-      const { default: script } = await import(
-        /* webpackChunkName: "GalleryCollectionScript" */
-        './page-scripts/gallery-collection'
-      );
-      return script;
-    }
-  }
-};
+const page = getPage(window.location.pathname);
+if (!page) {
+  localStorage.removeItem('lp-queryData');
+}
 
-(function () {
-  const path = window.location.pathname;
-  const page = getPage(path);
-  if (page) {
-    const loadedScript = loadScript(page);
-  } else {
-    localStorage.removeItem('lp-queryData');
-  }
-})();
+// const lazyLoadScript = async (page) => {
+//   switch (page) {
+//     case 'ness': {
+//       const { default: script } = await import(
+//         /* webpackChunkName: "arlen-ness" */
+//         './page-scripts/arlen-ness'
+//       );
+//       return script;
+//     }
+//     case 'gallery': {
+//       const { default: script } = await import(
+//         /* webpackChunkName: "gallery" */
+//         './page-scripts/gallery'
+//       );
+//       return script;
+//     }
+//     case 'search': {
+//       const { default: script } = await import(
+//         /* webpackChunkName: "search" */
+//         './page-scripts/search'
+//       );
+//       return script;
+//     }
+//     case 'gallery-collection': {
+//       const { default: script } = await import(
+//         /* webpackChunkName: "gallery-collection" */
+//         './page-scripts/gallery-collection'
+//       );
+//       return script;
+//     }
+//   }
+// };
+
+// (function () {
+//   console.log('Index script')
+//   const path = window.location.pathname;
+//   const page = getPage(path);
+//   if (page) {
+//     const loadedScript = lazyLoadScript(page);
+//   } else {
+//     localStorage.removeItem('lp-queryData');
+//   }
+// })();
 
 
 // Dynamic Import
