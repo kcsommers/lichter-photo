@@ -3,28 +3,42 @@ export const constructQuery = (gID, cID, searchTerm) => {
   return `https://lichterphoto.photoshelter.com/search?I_DSC=${searchTerm}&G_ID=${gID}&C_ID=${cID}&I_DSC_AND=t&_ACT=usrSearch`;
 };
 
-export const appendFilterTags = (gID, cID, viewAllUrl, containerClass, currentTag) => {
+export const appendFilterTags = function (gID, cID, viewAllUrl, containerClass, currentTag) {
+  console.log('Current tag', currentTag);
+
   // View All tag
-  const viewAllTag = document.createElement('a').classList.add('lp-filter-tg', 'view-all-tag');
+  const viewAllTag = document.createElement('a')
+  viewAllTag.classList.add('lp-filter-tag', 'view-all-tag');
   viewAllTag.href = viewAllUrl;
   viewAllTag.appendChild(document.createTextNode('View All'));
 
   // Showcase tag
-  const showcaseTag = document.createElement('a').classList.add('lp-filter-tg', 'showcase-tag');
+  const showcaseTag = document.createElement('a')
+  showcaseTag.classList.add('lp-filter-tag', 'showcase-tag');
   showcaseTag.href = constructQuery(gID, cID, 'showcase');
   showcaseTag.appendChild(document.createTextNode('Showcase'));
 
   // Featured tag
-  const featuredTag = document.createElement('a').classList.add('lp-filter-tg', 'featured-tag');
-  featuredTag.href = constructQuery(gID, cID, 'showcase');
+  const featuredTag = document.createElement('a')
+  featuredTag.classList.add('lp-filter-tag', 'featured-tag');
+  featuredTag.href = constructQuery(gID, cID, 'featured');
   featuredTag.appendChild(document.createTextNode('Featured'));
 
-  this[currentTag].removeAttribute('href')
-  this[currentTag].style.color = '#c35a1c';
+  const filterTags = {
+    viewAll: viewAllTag,
+    showcase: showcaseTag,
+    featured: featuredTag
+  }
+
+  filterTags[currentTag].removeAttribute('href')
+  filterTags[currentTag].style.color = '#c35a1c';
 
   //create filtersContainer
-  const filtersContainer = document.createElement('div').classList.add('lp-filters-container');
+  const filtersContainer = document.createElement('div')
+  filtersContainer.classList.add('lp-filters-container');
   const DOMContainer = document.querySelector(`.${containerClass}`); // container from photoshelter code
-  filtersContainer.appendChild(viewAllTag).appendChild(showcaseTag).appendChild(featuredTag);
+  filtersContainer.appendChild(viewAllTag)
+  filtersContainer.appendChild(showcaseTag)
+  filtersContainer.appendChild(featuredTag);
   DOMContainer.appendChild(filtersContainer);
 };

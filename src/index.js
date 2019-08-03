@@ -2,6 +2,7 @@ import { ArlenNess } from './page-scripts/arlen-ness';
 import { Gallery } from './page-scripts/gallery';
 import { GalleryCollection } from './page-scripts/gallery-collection';
 import { Search } from './page-scripts/search';
+import './styles/main.scss';
 
 const getPage = (path) => {
   if (/\/arlen-ness\//.test(path)) {
@@ -17,7 +18,7 @@ const getPage = (path) => {
     return 'gallery';
   }
   if (/\/search?/.test(path)) {
-    Search(path);
+    Search();
     return 'search';
   }
   return null;

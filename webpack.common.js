@@ -42,10 +42,10 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'kc-main.css'
     })
-  ],
-  optimization: {
-    splitChunks: {
-      chunks: 'all'
-    }
-  },
+  ]
+  // optimization: {
+  //   splitChunks: {
+  //     chunks: 'all'
+  //   }
+  // },
 };

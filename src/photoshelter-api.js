@@ -1,31 +1,45 @@
-require('dotenv').config();
-
 const http = require('http');
 
-console.log('KEY', process.env.PHOTOSHELTER_API_KEY)
+const host = 'www.photoshelter.com';
+const headers = {
+  'x-ps-api-key': '_ZGaiaXPmIU'
+};
+const options = (path) => ({ host, path, headers });
 
-const apiHost = 'www.photoshelter.com'
-const options = {
-  host: apiHost,
-  path: '/psapi/v3/gallery/G0000z5GWRYpQAlU/images',
-  headers: {
-    'x-ps-api-key': process.env.PHOTOSHELTER_API_KEY
+export const getGalleryThumbs = (cID) => {
+  const extend = {
+    Gallery: {},
+    MediaCount: {
+      fields: 'images'
+    },
+    KeyImage: {
+      fields: 'image_id'
+    },
+    ImageLink: {
+      fields: 'base,link'
+    }
   }
-}
+  const path = `/psapi/v3/collection/${cID}/children?extend=${JSON.stringify(extend)}`;
+  return requestData(options(path));
+};
 
-http.get(options, (res) => {
-  let data = '';
+const requestData = (options) => {
+  return new Promise((resolve, reject) => {
+    http.get(options, (res) => {
+      let data = '';
 
-  res.on('data', (chunk) => {
-    console.log('ON DATA');
-    data += chunk;
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      res.on('end', () => {
+        resolve(data);
+      });
+
+    }).on('error', (e) => {
+      reject(e);
+    });
   });
+};
 
-  res.on('end', () => {
-    console.log('ON END');
-    console.log(JSON.parse(data));
-  });
-
-}).on('error', (e) => {
-  console.log(`Error: ${e.message}`);
-});
+// const path = `/psapi/v3/gallery/G0000z5GWRYpQAlU/images`;

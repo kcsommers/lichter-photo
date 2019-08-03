@@ -1,7 +1,53 @@
 .lp-filters-container {
-  margin-top: 1em;
+    margin-top: 1em;
 }
 
 .lp-filter-tag {
-  margin-right: 1em;
+    margin-right: 1em;
+}
+
+.kc-gallery-thumbs-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.kc-thumbs-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 15px;
+    grid-row-gap: 15px;
+    grid-auto-rows: auto;
+}
+
+.kc-thumbnail-tag {
+    border: 1px solid rgba(90,96,110,0.25);
+    width: 252px;
+    height: 284px;
+    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px 16px;
+}
+
+.kc-thumbnail {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.kc-thumb-info-container {
+    text-align: center;
+    line-height: 1.3em;
+    padding: 0.5rem 0;
+}
+
+.kc-gallery-name {
+    color: #4c5a7b;
+    font-weight: normal;
+}
+
+.kc-gallery-images-count {
+  color: #5a606e;
+  font-size: 12px;
+  text-transform: uppercase;
 }
