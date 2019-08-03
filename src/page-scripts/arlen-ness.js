@@ -5,20 +5,17 @@ export const ArlenNess = () => {
     const collectionID = 'C0000D9Hndx5YX1s';
     getGalleryThumbs(collectionID, 0).then(response => {
       const parsedResponse = JSON.parse(response);
-      console.log(parsedResponse);
       if (parsedResponse.data && parsedResponse.data.Children && parsedResponse.data.Children.length) {
         const thumbsDOMContainer = document.querySelector('.kc-gallery-thumbs-container');
         const thumbsContainer = document.createElement('div');
         thumbsContainer.classList.add('kc-thumbs-container');
-        // const galleryIDs = [];
-        // const galleryNames = [];
-        // const coverLinks = parsedResponse.data.Children.map(gallery => {
-        //   galleryIDs.push(gallery.ChildGallery.gallery_id);
-        //   galleryNames.push(gallery.ChildGallery.Gallery.name);
-        //   return gallery.ChildGallery.GalleryCover[0].GalleryImage.ImageLink.base
-        // });
 
+        let currentRow = 0;
         parsedResponse.data.Children.forEach((gallery, i) => {
+          if (i > 0 && i % 4 === 0) {
+            currentRow++;
+          }
+
           const galleryID = gallery.ChildGallery.galleryID;
           const href = `https://lichterphoto.photoshelter.com/gallery/${galleryID}/${collectionID}`
 
@@ -28,7 +25,7 @@ export const ArlenNess = () => {
           const newThumbTag = document.createElement('a');
           newThumbTag.classList.add('kc-thumbnail-tag')
           newThumbTag.href = href;
-          // newThumbTag.style.gridColumn = i % 0;
+          newThumbTag.style.gridColumn = i - (4 * currentRow);
 
           const newThumb = document.createElement('img');
           newThumb.classList.add('kc-thumbnail');
