@@ -4,8 +4,6 @@ export const constructQuery = (gID, cID, searchTerm) => {
 };
 
 export const appendFilterTags = function (gID, cID, viewAllUrl, containerClass, currentTag) {
-  console.log('Current tag', currentTag);
-
   // View All tag
   const viewAllTag = document.createElement('a')
   viewAllTag.classList.add('lp-filter-tag', 'view-all-tag');
@@ -29,6 +27,8 @@ export const appendFilterTags = function (gID, cID, viewAllUrl, containerClass, 
     showcase: showcaseTag,
     featured: featuredTag
   }
+
+  console.log('CurrenTag:::: ', currentTag)
 
   filterTags[currentTag].removeAttribute('href')
   filterTags[currentTag].style.color = '#c35a1c';

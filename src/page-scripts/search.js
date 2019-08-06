@@ -2,7 +2,7 @@ import { appendFilterTags } from '../filter-tags';
 
 export const Search = () => {
   const { gID, cID, searchTerm } = parsePath(window.location.href);
-  const url = (gID && cID) ? `https://lichterphoto.photoshelter.com/gallery/${gID}/${cID}` : path;
+  const url = (gID && cID) ? `https://lichterphoto.photoshelter.com/gallery/${gID}/${cID}?full_gallery=true` : `${path}?full_gallery=true`;
   // store gID and cID in local storage if they exist
   if (gID && cID) {
     localStorage.setItem('lp-queryData', JSON.stringify(Object.assign({ gID, cID, searchTerm }, { url })));
@@ -18,7 +18,6 @@ const parsePath = (path) => {
   const searchTermMatch = path.match(/(I_DSC=)(.*?)(?=&)/);
   // If the path contains gID and cID, return their values
   if (gIDMatch && cIDMatch) {
-    console.log('GOT IT')
     gID = gIDMatch[0].split('G_ID=')[1];
     cID = cIDMatch[0].split('C_ID=')[1];
     searchTerm = searchTermMatch ? searchTermMatch[0].split('I_DSC=')[1] : null;

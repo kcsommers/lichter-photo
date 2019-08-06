@@ -24,7 +24,7 @@ const getPage = (path) => {
   return null;
 };
 
-const page = getPage(window.location.pathname);
+const page = getPage(window.location.href);
 if (!page) {
   localStorage.removeItem('lp-queryData');
 }

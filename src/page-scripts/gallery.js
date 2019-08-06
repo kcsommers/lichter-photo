@@ -2,7 +2,7 @@ import { appendFilterTags, constructQuery } from '../filter-tags';
 
 export const Gallery = (path) => {
   const { gID, cID } = parsePath(path);
-  const url = (gID && cID) ? `https://lichterphoto.photoshelter.com/gallery/${gID}/${cID}` : path;
+  const url = (gID && cID) ? `https://lichterphoto.photoshelter.com/gallery/${gID}/${cID}?full_gallery=true` : `${path}?full_gallery=true`;
   // store gID and cID in local storage if they exist
   if (gID && cID) {
     localStorage.setItem('lp-queryData', JSON.stringify(Object.assign({ gID, cID }, { url })));
@@ -12,7 +12,7 @@ export const Gallery = (path) => {
     window.location = constructQuery(gID, cID, 'showcase');
   }
   // append filter tags when dom is loaded
-  document.addEventListener('DOMContentLoaded', appendFilterTags.call(gID, cID, url, 'name', 'viewAll'));
+  document.addEventListener('DOMContentLoaded', appendFilterTags.bind(this, gID, cID, url, 'name', 'viewAll'));
 };
 
 const parsePath = (path) => {

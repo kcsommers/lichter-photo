@@ -16,7 +16,7 @@ export const ArlenNess = () => {
             currentRow++;
           }
 
-          const galleryID = gallery.ChildGallery.galleryID;
+          const galleryID = gallery.ChildGallery.gallery_id;
           const href = `https://lichterphoto.photoshelter.com/gallery/${galleryID}/${collectionID}`
 
           const newThumbContainer = document.createElement('div');
