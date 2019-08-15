@@ -1,4 +1,4 @@
-import { appendFilterTags } from '../filter-tags';
+import { appendFilterTags, appendPortraitCheckbox } from '../dom';
 
 export const Search = () => {
   const { gID, cID, searchTerm } = parsePath(window.location.href);
@@ -8,7 +8,10 @@ export const Search = () => {
     localStorage.setItem('lp-queryData', JSON.stringify(Object.assign({ gID, cID, searchTerm }, { url })));
   }
   // append filter tags when dom is loaded
-  document.addEventListener('DOMContentLoaded', appendFilterTags.bind(this, gID, cID, url, 'name', searchTerm || 'viewAll'));
+  document.addEventListener('DOMContentLoaded', () => {
+    appendFilterTags(gID, cID, url, 'name', searchTerm || 'viewAll');
+    appendPortraitCheckbox(searchTerm);
+  });
 };
 
 const parsePath = (path) => {

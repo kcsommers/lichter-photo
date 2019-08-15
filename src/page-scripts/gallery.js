@@ -1,4 +1,4 @@
-import { appendFilterTags, constructQuery } from '../filter-tags';
+import { appendFilterTags, constructQuery } from '../dom';
 
 export const Gallery = (path) => {
   const { gID, cID } = parsePath(path);
