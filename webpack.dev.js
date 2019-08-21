@@ -9,8 +9,8 @@ module.exports = merge(common, {
   devtool: 'inline-source-map',
   devServer: {
     https: {
-      cert: fs.readFileSync(path.join(__dirname, 'ssl', 'server.cer')),
-      key: fs.readFileSync(path.join(__dirname, 'ssl', 'server.key'))
+      cert: fs.readFileSync(path.join(__dirname, '../ssl', 'localhost.crt')),
+      key: fs.readFileSync(path.join(__dirname, '../ssl', 'localhost.key'))
     },
     headers: {
       "Access-Control-Allow-Origin": "*",

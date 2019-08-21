@@ -1,8 +1,11 @@
-.lp-filters-container {
+.kc-filters-container {
     margin-top: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.lp-filter-tag {
+.kc-filter-tag {
     margin-right: 1em;
 }
 
