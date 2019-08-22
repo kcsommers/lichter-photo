@@ -64,24 +64,25 @@
 }
 
 .kc-styled-portrait-checkbox {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border-radius: 3px;
-    border: 1px solid #8f8f8f;
+    border: 1px solid rgba(0,0,0,0.11);
     position: relative;
     margin-left: 0.5rem;
 }
 
 .kc-portrait-checkbox-checkmark {
-    left: 8px;
-    right: 8px;
-    top: 5px;
-    bottom: 5px;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 12px;
     position: absolute;
     border-right: 3px solid #eee;
     border-bottom: 3px solid #eee;
     box-sizing: border-box;
-    transform: rotate(45deg);
+    transform: translate(-50%, -50%) rotate(45deg);
+    opacity: 0;
 }
 
 #kc-portrait-checkbox {
@@ -93,5 +94,8 @@
 
 #kc-portrait-checkbox:checked ~ .kc-styled-portrait-checkbox {
     background-color: #ffc833;
-    border-color: #ffc833;
+    // border-color: #ffc833;
+    .kc-portrait-checkbox-checkmark{
+        opacity: 1;
+    }
 }

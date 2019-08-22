@@ -103,7 +103,7 @@ export const appendPortraitCheckbox = (searchTerm, isChecked) => {
   const label = document.createElement('label');
   label.classList.add('kc-portrait-checkbox-label');
   label.htmlFor = 'kc-portrait-checkbox'
-  const labelText = document.createTextNode('Show Portraits');
+  const labelText = document.createTextNode('Portraits');
   label.appendChild(checkbox);
   label.appendChild(labelText);
   label.appendChild(styledCheckbox);
