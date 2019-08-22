@@ -50,13 +50,48 @@
 }
 
 .kc-gallery-images-count {
-  color: #5a606e;
-  font-size: 12px;
-  text-transform: uppercase;
+    color: #5a606e;
+    font-size: 12px;
+    text-transform: uppercase;
 }
 
-.kc-search-results-title-container {
+.kc-portrait-checkbox-container,
+.kc-portrait-checkbox-label,
+.kc-styled-portrait-checkbox {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.kc-styled-portrait-checkbox {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    border: 1px solid #8f8f8f;
+    position: relative;
+    margin-left: 0.5rem;
+}
+
+.kc-portrait-checkbox-checkmark {
+    left: 8px;
+    right: 8px;
+    top: 5px;
+    bottom: 5px;
+    position: absolute;
+    border-right: 3px solid #eee;
+    border-bottom: 3px solid #eee;
+    box-sizing: border-box;
+    transform: rotate(45deg);
+}
+
+#kc-portrait-checkbox {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    opacity: 0;
+}
+
+#kc-portrait-checkbox:checked ~ .kc-styled-portrait-checkbox {
+    background-color: #ffc833;
+    border-color: #ffc833;
 }

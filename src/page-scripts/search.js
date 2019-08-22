@@ -11,7 +11,7 @@ export const Search = () => {
   // append filter tags when dom is loaded
   document.addEventListener('DOMContentLoaded', () => {
     appendFilterTags(gID, cID, url, 'name', searchTerm || 'viewAll');
-    appendPortraitCheckbox(searchTerm);
+    appendPortraitCheckbox(searchTerm, /\+portrait/i.test(searchTerm));
   });
 };
 
@@ -23,17 +23,17 @@ const parsePath = (path) => {
   let gID, cID, searchTerm;
   if (gIDMatch) {
     gID = gIDMatch[2];
-  } else if(storageData && storageData.gID) {
+  } else if (storageData && storageData.gID) {
     gID = storageData.gID;
   }
   if (cIDMatch) {
     cID = cIDMatch[2];
-  } else if(storageData && storageData.cID) {
+  } else if (storageData && storageData.cID) {
     cID = storageData.cID;
   }
   if (searchTermMatch) {
     searchTerm = searchTermMatch[2];
-  } else if(storageData && storageData.searchTerm) {
+  } else if (storageData && storageData.searchTerm) {
     searchTerm = storageData.searchTerm;
   }
   return { gID, cID, searchTerm }

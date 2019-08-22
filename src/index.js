@@ -17,7 +17,7 @@ const getPage = (path) => {
     Gallery(path);
     return 'gallery';
   }
-  if (/\/search?/.test(path)) {
+  if (/\/search?/.test(path) && !/\/search-page/.test(path)) {
     Search();
     return 'search';
   }
