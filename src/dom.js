@@ -1,13 +1,15 @@
+import { Storage } from "./storage";
+
 export const constructQuery = (gID, cID, searchTerm) => {
   // will be the a tags href
-  return `https://lichterphoto.photoshelter.com/search?I_DSC=${searchTerm}&G_ID=${gID}&C_ID=${cID}&I_DSC_AND=t&_ACT=usrSearch`;
+  return `https://lichterphoto.photoshelter.com/search?I_DSC=${searchTerm}&G_ID=${gID}&C_ID=${cID}&_ACT=usrSearch`;
 };
 
-export const appendFilterTags = function (gID, cID, viewAllUrl, containerClass, currentTag) {
+export const appendFilterTags = function (gID, cID, currentTag) {
   // View All tag
   const viewAllTag = document.createElement('a');
   viewAllTag.classList.add('kc-filter-tag', 'view-all-tag');
-  viewAllTag.href = viewAllUrl;
+  viewAllTag.href = constructQuery(gID, cID, '');
   viewAllTag.appendChild(document.createTextNode('View All'));
 
   // Showcase tag
@@ -33,22 +35,23 @@ export const appendFilterTags = function (gID, cID, viewAllUrl, containerClass, 
     filterTags[currentTag].style.color = '#c35a1c';
   }
 
-  //create filtersContainer
+  // create filtersContainer
   const filtersContainer = document.createElement('div');
   filtersContainer.classList.add('kc-filters-container');
   const filtersWrap = document.createElement('div');
   filtersWrap.classList.add('kc-filters-tags-container');
-  const DOMContainer = document.querySelector(`.${containerClass}`); // container from photoshelter code
+  const DOMContainer = document.querySelector('.name'); // container from photoshelter code
   if (DOMContainer) {
-    filtersWrap.appendChild(viewAllTag)
-    filtersWrap.appendChild(showcaseTag)
+    filtersWrap.appendChild(showcaseTag);
     filtersWrap.appendChild(featuredTag);
-    filtersContainer.appendChild(filtersWrap)
+    filtersWrap.appendChild(viewAllTag);
+    filtersContainer.appendChild(filtersWrap);
     DOMContainer.appendChild(filtersContainer);
   }
 };
 
 const checkboxChanged = (searchTerm, isChecked) => {
+  console.log('CHANGED:::: ', searchTerm, isChecked)
   const path = window.location.href;
   const searchTermMatch = path.match(/(I_DSC=)(.*?)(?=&)/);
   if (!searchTerm) {
@@ -56,26 +59,28 @@ const checkboxChanged = (searchTerm, isChecked) => {
     searchTerm = searchTermMatch && searchTermMatch[2];
   }
 
+
   if (!searchTerm) {
     // if url doesnt work look in local storage
-    const storageData = localStorage.getItem('lp-queryData') && JSON.parse(localStorage.getItem('lp-queryData'));
-    searchTerm = storageData && storageData.searchTerm;
+    const queryData = localStorage.getItem(Storage.QUERY_DATA)
+    const storageData = JSON.parse(queryData);
+    searchTerm = (storageData && storageData.searchTerm) || '';
   }
 
-  if (searchTerm) {
-    const newSearchTerm = isChecked ?
-      searchTerm + '+portrait' :
-      searchTerm.replace(/\+portrait/i, '');
+  console.log('SE', searchTerm)
+  const newSearchTerm = isChecked ?
+    searchTerm + '+portrait' :
+    searchTerm.replace(/\+portrait/i, '');
 
-    let newPath = path
-      .replace(`I_DSC=${searchTerm}`, `I_DSC=${newSearchTerm}`)
-      .replace('I_DSC_AND=f', 'I_DSC_AND=t');;
-    if (!path.includes('I_DSC_AND=t')) {
-      newPath = newPath + '&I_DSC_AND=t';
-    }
-    // set the window location to the new path
-    window.location = newPath;
+  let newPath = path
+    .replace(`I_DSC=${searchTerm}`, `I_DSC=${newSearchTerm}`)
+    .replace('I_DSC_AND=f', 'I_DSC_AND=t');;
+  if (!path.includes('I_DSC_AND=t')) {
+    newPath = newPath + '&I_DSC_AND=t';
   }
+  // set the window location to the new path
+  window.location = newPath;
+
 }
 
 export const appendPortraitCheckbox = (searchTerm, isChecked) => {
@@ -105,8 +110,8 @@ export const appendPortraitCheckbox = (searchTerm, isChecked) => {
   label.htmlFor = 'kc-portrait-checkbox'
   const labelText = document.createTextNode('Portraits');
   label.appendChild(checkbox);
-  label.appendChild(labelText);
   label.appendChild(styledCheckbox);
+  label.appendChild(labelText);
 
   checkboxContainer.appendChild(label);
   const filtersContainer = document.querySelector('.kc-filters-container');

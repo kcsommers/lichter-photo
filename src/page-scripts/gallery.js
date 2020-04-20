@@ -1,18 +1,19 @@
-import { appendFilterTags, constructQuery } from '../dom';
+import { constructQuery } from '../dom';
+import { Storage } from '../storage';
+
+/**
+ * Gallery page will never fully load
+ * it will be redirected to search results page
+ */
 
 export const Gallery = (path) => {
   const { gID, cID } = parsePath(path);
-  const url = (gID && cID) ? `https://lichterphoto.photoshelter.com/gallery/${gID}/${cID}?full_gallery=true` : `${path}?full_gallery=true`;
-  // store gID and cID in local storage if they exist
   if (gID && cID) {
-    localStorage.setItem('lp-queryData', JSON.stringify(Object.assign({ gID, cID }, { url })));
-  }
-  // set the window location to showcase search page on initial gallery visit
-  if (!/full_gallery=true/.test(path)) {
+    const url = `https://lichterphoto.photoshelter.com/gallery/${gID}/${cID}`;
+    localStorage.setItem(Storage.QUERY_DATA, JSON.stringify({ gID, cID, url }));
+    // redirect window to search page, with showcase as search term
     window.location = constructQuery(gID, cID, 'showcase');
   }
-  // append filter tags when dom is loaded
-  document.addEventListener('DOMContentLoaded', appendFilterTags.bind(this, gID, cID, url, 'name', 'viewAll'));
 };
 
 const parsePath = (path) => {

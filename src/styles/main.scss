@@ -2,7 +2,6 @@
     margin-top: 1em;
     display: flex;
     align-items: center;
-    justify-content: space-between;
 }
 
 .kc-filter-tag {
@@ -63,13 +62,17 @@
     align-items: center;
 }
 
+.kc-portrait-checkbox-label {
+    cursor: pointer;
+}
+
 .kc-styled-portrait-checkbox {
     width: 18px;
     height: 18px;
     border-radius: 3px;
     border: 1px solid rgba(0,0,0,0.11);
     position: relative;
-    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 .kc-portrait-checkbox-checkmark {
@@ -97,5 +100,58 @@
     // border-color: #ffc833;
     .kc-portrait-checkbox-checkmark{
         opacity: 1;
+    }
+}
+
+.kc-interact {
+    display: flex;
+    margin-bottom: 0.5rem;
+    width: auto !important;
+    float: none;
+    .count {
+        flex: 1;
+        text-align: center;
+    }
+    .kc-more-info-wrap {
+        width: 330px;
+        float: right;
+        .more-info {
+            display: inline-block;
+            float: none;
+            a {
+                display: inline-block;
+                float: none;
+                padding: 5px 6px 6px;
+            }
+        }
+    }
+}
+.kc-imageBoxSub {
+    >div.more >p.name {
+        margin-top: calc(45px - 0.5rem);
+    }
+}
+.kc-gallery-link-wrap {
+    padding: 0 5% 1rem 5%;
+}
+.kc-gallery-link {
+    font-size: 1rem;
+    &:before {
+        font-family: 'icon-set';
+        content: '\0065';
+        position: relative;
+        font-size: 14px;
+        line-height: 24px;
+        text-transform: none;
+        color: #fff;
+        background: #4c5a7b;
+        border-radius: 50%;
+        width: 23px;
+        padding: 0 1px 0 0;
+        height: 24px;
+        line-height: 24px;
+        display: inline-block;
+        text-align: center;
+        top: -2px;
     }
 }

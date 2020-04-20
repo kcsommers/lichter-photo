@@ -1,10 +1,11 @@
 const http = require('http');
 
+const baseUrl = '/psapi/v3';
 const host = 'www.photoshelter.com';
 const headers = {
   'x-ps-api-key': '_ZGaiaXPmIU'
 };
-const options = (path) => ({ host, path, headers });
+const apiOptions = (path) => ({ host, path, headers });
 
 export const getGalleryThumbs = (cID) => {
   const extend = {
@@ -19,8 +20,12 @@ export const getGalleryThumbs = (cID) => {
       fields: 'base,link'
     }
   }
-  const path = `/psapi/v3/collection/${cID}/children?extend=${JSON.stringify(extend)}`;
-  return requestData(options(path));
+  const path = `${baseUrl}/collection/${cID}/children?extend=${JSON.stringify(extend)}`;
+  return requestData(apiOptions(path));
+};
+
+export const getGalleryInfo = (gID) => {
+  return requestData(apiOptions(`${baseUrl}/gallery/${gID}`));
 };
 
 const requestData = (options) => {

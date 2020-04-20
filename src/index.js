@@ -2,31 +2,48 @@ import { ArlenNess } from './page-scripts/arlen-ness';
 import { Gallery } from './page-scripts/gallery';
 import { GalleryCollection } from './page-scripts/gallery-collection';
 import { Search } from './page-scripts/search';
+import { SearchPage } from './page-scripts/search-page';
+import { Image } from './page-scripts/image';
 import './styles/main.scss';
+import { Storage } from './storage';
 
-const getPage = (path) => {
-  if (/\/arlen-ness\//.test(path)) {
-    ArlenNess();
-    return 'arlen-ness';
-  }
-  if (/\/gallery-collection\//.test(path)) {
-    GalleryCollection();
-    return (path.match(/By-Builder/)) ? 'gallery-collection' : null;
+const getPage = (url) => {
+  const pathStart = 'https://lichterphoto.photoshelter.com';
+  const path = url.replace(pathStart, '');
+  console.log('GETTING PAGE:::: ', path)
+  if (path.startsWith('/image') || path.startsWith('/gallery-image')) {
+    // /image === from search results
+    // /gallery-image === from gallery
+    Image();
+    return 'image';
   }
   if (/\/gallery\//.test(path)) {
     Gallery(path);
     return 'gallery';
   }
-  if (/\/search?/.test(path) && !/\/search-page/.test(path)) {
+  if (path.startsWith('/search-page')) {
+    SearchPage();
+    return 'search-page';
+  }
+  if (path.startsWith('/search') && !path.startsWith('/search-page')) {
     Search();
     return 'search';
   }
+
+  // if (/\/arlen-ness\//.test(path)) {
+  //   ArlenNess();
+  //   return 'arlen-ness';
+  // }
+  // if (/\/gallery-collection\//.test(path)) {
+  //   GalleryCollection();
+  //   return (path.match(/By-Builder/)) ? 'gallery-collection' : null;
+  // }
   return null;
 };
 
 const page = getPage(window.location.href);
 if (!page) {
-  localStorage.removeItem('lp-queryData');
+  localStorage.removeItem(Storage.QUERY_DATA);
 }
 
 // const lazyLoadScript = async (page) => {
