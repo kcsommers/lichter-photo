@@ -10,7 +10,6 @@ import { Storage } from './storage';
 const getPage = (url) => {
   const pathStart = 'https://lichterphoto.photoshelter.com';
   const path = url.replace(pathStart, '');
-  console.log('GETTING PAGE:::: ', path)
   if (path.startsWith('/image') || path.startsWith('/gallery-image')) {
     // /image === from search results
     // /gallery-image === from gallery
@@ -44,6 +43,12 @@ const getPage = (url) => {
 const page = getPage(window.location.href);
 if (!page) {
   localStorage.removeItem(Storage.QUERY_DATA);
+} else {
+  const html = document.querySelector('html');
+  if (html) {
+    html.classList.add('kc-page');
+    html.classList.add(`kc-${page}-page`);
+  }
 }
 
 // const lazyLoadScript = async (page) => {

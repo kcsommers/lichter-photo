@@ -1,27 +1,37 @@
 import { Storage } from "./storage";
 
-export const constructQuery = (gID, cID, searchTerm) => {
+export const constructQuery = (gID, cID, searchTerm, isAnd) => {
   // will be the a tags href
-  return `https://lichterphoto.photoshelter.com/search?I_DSC=${searchTerm}&G_ID=${gID}&C_ID=${cID}&_ACT=usrSearch`;
+  return `https://lichterphoto.photoshelter.com/search?I_DSC=${searchTerm}&${isAnd || 'I_DSC_AND=t'}&G_ID=${gID}&C_ID=${cID}&_ACT=usrSearch`;
 };
 
-export const appendFilterTags = function (gID, cID, currentTag) {
+export const constructSearchTerm = (term, newTag) => {
+  const tagRegex = /(\+)?(featured|showcase)/gi;
+  let newTerm = term.replace(tagRegex, '');
+  if (newTag) {
+    return newTerm ? `${newTerm}+${newTag}` : newTag;
+  }
+  return newTerm;
+}
+
+export const appendFilterTags = function (gID, cID, searchTerm, isAnd) {
+
   // View All tag
   const viewAllTag = document.createElement('a');
   viewAllTag.classList.add('kc-filter-tag', 'view-all-tag');
-  viewAllTag.href = constructQuery(gID, cID, '');
+  viewAllTag.href = constructQuery(gID, cID, constructSearchTerm(searchTerm), isAnd);
   viewAllTag.appendChild(document.createTextNode('View All'));
 
   // Showcase tag
   const showcaseTag = document.createElement('a');
   showcaseTag.classList.add('kc-filter-tag', 'showcase-tag');
-  showcaseTag.href = constructQuery(gID, cID, 'showcase');
+  showcaseTag.href = constructQuery(gID, cID, constructSearchTerm(searchTerm, 'showcase'), isAnd);
   showcaseTag.appendChild(document.createTextNode('Showcase'));
 
   // Featured tag
   const featuredTag = document.createElement('a');
   featuredTag.classList.add('kc-filter-tag', 'featured-tag');
-  featuredTag.href = constructQuery(gID, cID, 'featured');
+  featuredTag.href = constructQuery(gID, cID, constructSearchTerm(searchTerm, 'featured'), isAnd);
   featuredTag.appendChild(document.createTextNode('Featured'));
 
   const filterTags = {
@@ -30,10 +40,14 @@ export const appendFilterTags = function (gID, cID, currentTag) {
     featured: featuredTag
   };
 
-  if (['viewAll', 'showcase', 'featured'].includes(currentTag)) {
-    filterTags[currentTag].removeAttribute('href');
-    filterTags[currentTag].style.color = '#c35a1c';
+  let activeTag = 'viewAll';
+  if (searchTerm.includes('showcase')) {
+    activeTag = 'showcase';
+  } else if (searchTerm.includes('featured')) {
+    activeTag = 'featured';
   }
+  filterTags[activeTag].removeAttribute('href');
+  filterTags[activeTag].style.color = '#c35a1c';
 
   // create filtersContainer
   const filtersContainer = document.createElement('div');
@@ -51,7 +65,6 @@ export const appendFilterTags = function (gID, cID, currentTag) {
 };
 
 const checkboxChanged = (searchTerm, isChecked) => {
-  console.log('CHANGED:::: ', searchTerm, isChecked)
   const path = window.location.href;
   const searchTermMatch = path.match(/(I_DSC=)(.*?)(?=&)/);
   if (!searchTerm) {
@@ -67,7 +80,6 @@ const checkboxChanged = (searchTerm, isChecked) => {
     searchTerm = (storageData && storageData.searchTerm) || '';
   }
 
-  console.log('SE', searchTerm)
   const newSearchTerm = isChecked ?
     searchTerm + '+portrait' :
     searchTerm.replace(/\+portrait/i, '');

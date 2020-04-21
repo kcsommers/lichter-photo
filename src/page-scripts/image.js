@@ -4,8 +4,9 @@ import { constructQuery } from "../dom";
 
 export const Image = () => {
   document.addEventListener('DOMContentLoaded', () => {
+
     /***************
-     * Prev/Next Arrows
+     * Center Prev/Next Arrows
      */
     const interactDiv = document.querySelector('.interact');
     const moreInfoDiv = document.querySelector('.more-info');
@@ -25,11 +26,8 @@ export const Image = () => {
     // get gallery id from local storage
     const queryDataFromStorage = localStorage.getItem(Storage.QUERY_DATA);
     const queryData = queryDataFromStorage && JSON.parse(queryDataFromStorage);
+    const backLink = document.querySelector('.search_results_link');
     if (queryData && queryData.gID && queryData.cID) {
-      const backLink = document.querySelector('.search_results_link');
-      if (backLink) {
-        backLink.textContent = '';
-      }
       getGalleryInfo(queryData.gID)
         .then(res => {
           if (res) {
@@ -39,11 +37,16 @@ export const Image = () => {
               if (backLink) {
                 backLink.textContent = resParsed.data.Gallery.name;
                 backLink.href = constructQuery(queryData.gID, queryData.cID, 'showcase');
+                backLink.classList.add('kc-search-results-link-visible');
               }
             }
           }
         })
         .catch(err => console.error(err));
+    } else {
+      if (backLink) {
+        backLink.classList.add('kc-search-results-link-visible');
+      }
     }
 
     // const imageGalleriesTags = document.querySelectorAll('.image_galleries');
