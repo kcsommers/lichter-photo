@@ -10,7 +10,8 @@ import { Storage } from './storage';
 const getPage = (url) => {
   const pathStart = 'https://lichterphoto.photoshelter.com';
   const path = url.replace(pathStart, '');
-  if (path === '/index') {
+  console.log(path)
+  if (path === '/index' || path === '/') {
     window.location = 'https://lichter-wrapper.webflow.io'
     return;
   }
