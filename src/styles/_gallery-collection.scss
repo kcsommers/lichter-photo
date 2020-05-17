@@ -1,0 +1,19 @@
+.kc-gallery-collection-page {
+    div.kc-description {
+        max-height: 75px;
+        overflow: hidden;
+        margin-bottom: 0.5rem;
+        &.open {
+            max-height: none;
+        }
+    }
+    span.kc-showmore-btn {
+        color: #eba073;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        &:hover {
+            color: #c35a1c;
+        }
+    }
+}

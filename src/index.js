@@ -21,7 +21,11 @@ const getPage = (url) => {
     Image();
     return 'image';
   }
-  if (/\/gallery\//.test(path)) {
+  if (path.startsWith('/gallery-collection')) {
+    GalleryCollection();
+    return 'gallery-collection';
+  }
+  if (path.startsWith('/gallery') && !path.startsWith('/gallery-collection')) {
     Gallery(path);
     return 'gallery';
   }
@@ -37,10 +41,6 @@ const getPage = (url) => {
   // if (/\/arlen-ness\//.test(path)) {
   //   ArlenNess();
   //   return 'arlen-ness';
-  // }
-  // if (/\/gallery-collection\//.test(path)) {
-  //   GalleryCollection();
-  //   return (path.match(/By-Builder/)) ? 'gallery-collection' : null;
   // }
   return null;
 };

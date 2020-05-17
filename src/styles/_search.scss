@@ -6,6 +6,16 @@
 
 .kc-filter-tag {
     margin-right: 1em;
+    background-color: #ffc700;
+    color: #fff;
+    padding: 6px;
+
+    &.active {
+        background-color: #000;
+    }
+    &:hover {
+        color: #fff;
+    }
 }
 
 .kc-portrait-checkbox-container,

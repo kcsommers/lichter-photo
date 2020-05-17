@@ -26,7 +26,7 @@ export const appendFilterTags = function (gID, cID, searchTerm, isAnd) {
   const showcaseTag = document.createElement('a');
   showcaseTag.classList.add('kc-filter-tag', 'showcase-tag');
   showcaseTag.href = constructQuery(gID, cID, constructSearchTerm(searchTerm, 'showcase'), isAnd);
-  showcaseTag.appendChild(document.createTextNode('Showcase'));
+  showcaseTag.appendChild(document.createTextNode('Top Picks'));
 
   // Featured tag
   const featuredTag = document.createElement('a');
@@ -47,7 +47,7 @@ export const appendFilterTags = function (gID, cID, searchTerm, isAnd) {
     activeTag = 'featured';
   }
   filterTags[activeTag].removeAttribute('href');
-  filterTags[activeTag].style.color = '#c35a1c';
+  filterTags[activeTag].classList.add('active');
 
   // create filtersContainer
   const filtersContainer = document.createElement('div');
@@ -72,7 +72,6 @@ const checkboxChanged = (searchTerm, isChecked) => {
     searchTerm = searchTermMatch && searchTermMatch[2];
   }
 
-
   if (!searchTerm) {
     // if url doesnt work look in local storage
     const queryData = localStorage.getItem(Storage.QUERY_DATA)
@@ -80,9 +79,12 @@ const checkboxChanged = (searchTerm, isChecked) => {
     searchTerm = (storageData && storageData.searchTerm) || '';
   }
 
-  const newSearchTerm = isChecked ?
-    searchTerm + '+portrait' :
-    searchTerm.replace(/\+portrait/i, '');
+  let newSearchTerm = isChecked ?
+    searchTerm
+      .replace(/(\+)?showcase/i, '')
+      .replace(/(\+)?featured/i, '')
+    + '+portrait'
+    : searchTerm.replace(/\+portrait/i, '');
 
   let newPath = path
     .replace(`I_DSC=${searchTerm}`, `I_DSC=${newSearchTerm}`)

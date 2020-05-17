@@ -21,11 +21,6 @@
         }
     }
 }
-.kc-imageBoxSub {
-    >div.more >p.name {
-        margin-top: calc(45px - 0.5rem);
-    }
-}
 .kc-gallery-link-wrap {
     padding: 0 5% 1rem 5%;
 }
@@ -48,5 +43,28 @@
         display: inline-block;
         text-align: center;
         top: -2px;
+    }
+}
+
+@media only screen and (min-width: 569px) {
+    .kc-imageBoxSub {
+        padding-right: 0 !important;
+        >div.more {
+            margin-right: 0 !important;
+            position: relative !important;
+            overflow: hidden;
+            height: 0px;
+            >p.name {
+                margin-top: calc(45px - 0.5rem);
+            }
+        }
+        >div.imageWrap {
+            width: calc(100% - 330px) !important;
+        }
+        &.show {
+            >div.more {
+                height: auto;
+            }
+        }
     }
 }

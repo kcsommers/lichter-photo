@@ -7,7 +7,9 @@ export const Search = () => {
 
   // append filter tags when dom is loaded
   document.addEventListener('DOMContentLoaded', () => {
-    // remove brackets from images found
+    /**
+     * Remove brackets from images found
+     */
     const nameDiv = document.querySelector('.name');
     if (nameDiv) {
       nameDiv.textContent = nameDiv.textContent.replace(/[\{\}(found)]/g, '').trim();

@@ -49,6 +49,17 @@ export const Image = () => {
       }
     }
 
+    /***************
+     * Remove Copyright
+     */
+    const dl = document.querySelector('dl');
+    if (dl) {
+      const cpLabel = dl.children[2];
+      const cpName = dl.children[3];
+      dl.removeChild(cpLabel);
+      dl.removeChild(cpName);
+    }
+
     // const imageGalleriesTags = document.querySelectorAll('.image_galleries');
     // const mainDiv = document.querySelector('#main');
     // if (mainDiv && imageGalleriesTags && imageGalleriesTags[0]) {

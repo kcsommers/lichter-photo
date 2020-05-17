@@ -21,6 +21,11 @@
         .thumbs >.image >.info {
             display: none;
         }
+
+        // remove social links
+        .social {
+            display: none;
+        }
     }
 
     // image page
@@ -43,9 +48,14 @@
 
     &.kc-search-page-page {
         .search_box_advanced {
+            fieldset:nth-child(3),
+            fieldset:nth-child(4),
+            fieldset:nth-child(5),
+            fieldset:nth-child(6),
             fieldset:nth-child(7),
             fieldset:nth-child(8),
-            fieldset:nth-child(9) {
+            fieldset:nth-child(9),
+            fieldset:nth-child(10) {
                 display: none;
             }
         }
