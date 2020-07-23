@@ -56,11 +56,24 @@ export const Search = () => {
         .then(res => {
           if (res) {
             const resParsed = JSON.parse(res);
-            if (resParsed.data && resParsed.data.Gallery && resParsed.data.Gallery.name) {
-              // Update title with gallery name
-              if (c1Title) {
+            if (resParsed.data && resParsed.data.Gallery) {
+
+              // gallery name
+              if (resParsed.data.Gallery.name && c1Title) {
                 c1Title.textContent = resParsed.data.Gallery.name;
                 c1Title.classList.add('kc-c1title-visible');
+              }
+
+              // gallery description
+              if (resParsed.data.Gallery.description) {
+                const headerDiv = document.querySelector('.content div:first-child')
+                if (headerDiv) {
+                  const descDiv = document.createElement('div');
+                  descDiv.classList.add('kc-description-wrap');
+                  descDiv.classList.add('kc-fade-in');
+                  descDiv.textContent = resParsed.data.Gallery.description;
+                  headerDiv.appendChild(descDiv);
+                }
               }
             }
           }

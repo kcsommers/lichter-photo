@@ -1,6 +1,6 @@
 import { Storage } from "./storage";
 
-export const constructQuery = (gID, cID, searchTerm, isAnd) => {
+export const constructSearchPageQuery = (gID, cID, searchTerm, isAnd) => {
   // will be the a tags href
   return `https://lichterphoto.photoshelter.com/search?I_DSC=${searchTerm}&${isAnd || 'I_DSC_AND=t'}&G_ID=${gID}&C_ID=${cID}&_ACT=usrSearch`;
 };
@@ -19,19 +19,19 @@ export const appendFilterTags = function (gID, cID, searchTerm, isAnd) {
   // View All tag
   const viewAllTag = document.createElement('a');
   viewAllTag.classList.add('kc-filter-tag', 'view-all-tag');
-  viewAllTag.href = constructQuery(gID, cID, constructSearchTerm(searchTerm), isAnd);
+  viewAllTag.href = constructSearchPageQuery(gID, cID, constructSearchTerm(searchTerm), isAnd);
   viewAllTag.appendChild(document.createTextNode('View All'));
 
   // Showcase tag
   const showcaseTag = document.createElement('a');
   showcaseTag.classList.add('kc-filter-tag', 'showcase-tag');
-  showcaseTag.href = constructQuery(gID, cID, constructSearchTerm(searchTerm, 'showcase'), isAnd);
+  showcaseTag.href = constructSearchPageQuery(gID, cID, constructSearchTerm(searchTerm, 'showcase'), isAnd);
   showcaseTag.appendChild(document.createTextNode('Top Picks'));
 
   // Featured tag
   const featuredTag = document.createElement('a');
   featuredTag.classList.add('kc-filter-tag', 'featured-tag');
-  featuredTag.href = constructQuery(gID, cID, constructSearchTerm(searchTerm, 'featured'), isAnd);
+  featuredTag.href = constructSearchPageQuery(gID, cID, constructSearchTerm(searchTerm, 'featured'), isAnd);
   featuredTag.appendChild(document.createTextNode('Featured'));
 
   const filterTags = {

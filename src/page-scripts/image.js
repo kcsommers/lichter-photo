@@ -1,6 +1,6 @@
 import { Storage } from "../storage";
 import { getGalleryInfo } from "../photoshelter-api";
-import { constructQuery } from "../dom";
+import { constructSearchPageQuery } from "../dom";
 
 export const Image = () => {
   document.addEventListener('DOMContentLoaded', () => {
@@ -36,7 +36,7 @@ export const Image = () => {
               // Update title with gallery name
               if (backLink) {
                 backLink.textContent = resParsed.data.Gallery.name;
-                backLink.href = constructQuery(queryData.gID, queryData.cID, 'showcase');
+                backLink.href = constructSearchPageQuery(queryData.gID, queryData.cID, 'showcase');
                 backLink.classList.add('kc-search-results-link-visible');
               }
             }
