@@ -71,7 +71,7 @@ export const Search = () => {
                   const descDiv = document.createElement('div');
                   descDiv.classList.add('kc-description-wrap');
                   descDiv.classList.add('kc-fade-in');
-                  descDiv.textContent = resParsed.data.Gallery.description;
+                  descDiv.innerHTML = resParsed.data.Gallery.description;
                   headerDiv.appendChild(descDiv);
                 }
               }
