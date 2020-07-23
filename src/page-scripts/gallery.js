@@ -13,7 +13,7 @@ export const Gallery = (path) => {
     const url = `https://lichterphoto.photoshelter.com/gallery/${gID}/${cID}`;
     localStorage.setItem(Storage.QUERY_DATA, JSON.stringify({ gID, cID, url }));
     // redirect window to search page, with showcase as search term
-    // window.location = constructSearchPageQuery(gID, cID, 'showcase');
+    window.location = constructSearchPageQuery(gID, cID, 'showcase');
   }
 };
 
