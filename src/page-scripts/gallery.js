@@ -1,5 +1,6 @@
 import { constructSearchPageQuery } from '../dom';
 import { Storage } from '../storage';
+import { Galleries } from '../galleries';
 
 /**
  * Gallery page will never fully load
@@ -8,12 +9,18 @@ import { Storage } from '../storage';
 
 export const Gallery = (path) => {
   // parse gallery page path and redirect to search page
+
+  const noFilterGals = [
+    Galleries.LIMITED_EDITION
+  ];
+
   const { gID, cID } = parsePath(path);
   if (gID && cID) {
     const url = `https://lichterphoto.photoshelter.com/gallery/${gID}/${cID}`;
     localStorage.setItem(Storage.QUERY_DATA, JSON.stringify({ gID, cID, url }));
     // redirect window to search page, with showcase as search term
-    window.location = constructSearchPageQuery(gID, cID, 'showcase');
+    const searchTerm = noFilterGals.includes(gID) ? '' : 'showcase';
+    window.location = constructSearchPageQuery(gID, cID, searchTerm);
   }
 };
 

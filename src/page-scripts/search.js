@@ -43,14 +43,20 @@ export const Search = () => {
     const c1Title = document.querySelector('.c1title');
     // if theres no gallery id, we're coming directly from search page
     if (!gID) {
+
       appendFilterTags('', '', searchTerm, isAnd);
-      appendPortraitCheckbox(searchTerm, /\+portrait/i.test(searchTerm));
+
+      // appendPortraitCheckbox(searchTerm, /\+portrait/i.test(searchTerm));
+
       if (c1Title) {
         c1Title.classList.add('kc-c1title-visible');
       }
     } else {
+
       appendFilterTags(gID, cID, searchTerm, isAnd);
-      appendPortraitCheckbox(searchTerm, /\+portrait/i.test(searchTerm));
+
+      // appendPortraitCheckbox(searchTerm, /\+portrait/i.test(searchTerm));
+
       // call photoshelter api to get gallery info
       getGalleryInfo(gID)
         .then(res => {

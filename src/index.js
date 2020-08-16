@@ -11,7 +11,7 @@ const getPage = (url) => {
   const pathStart = 'https://lichterphoto.photoshelter.com';
   const path = url.replace(pathStart, '');
   if (path === '/index' || path === '/') {
-    window.location = 'https://lichter-wrapper.webflow.io'
+    window.location = 'https://lichterphoto.com';
     return;
   }
   if (path.startsWith('/image') || path.startsWith('/gallery-image')) {
