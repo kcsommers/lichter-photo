@@ -6,10 +6,14 @@ import { SearchPage } from './page-scripts/search-page';
 import { Image } from './page-scripts/image';
 import './styles/main.scss';
 import { Storage } from './storage';
+import { log } from './utils';
 
 const getPage = (url) => {
   const pathStart = 'https://lichterphoto.photoshelter.com';
   const path = url.replace(pathStart, '');
+
+  log('PATH:::: ', path);
+
   if (path === '/index' || path === '/') {
     window.location = 'https://lichterphoto.com';
     return;
@@ -37,10 +41,6 @@ const getPage = (url) => {
     return 'search';
   }
 
-  // if (/\/arlen-ness\//.test(path)) {
-  //   ArlenNess();
-  //   return 'arlen-ness';
-  // }
   return null;
 };
 

@@ -1,6 +1,7 @@
 import { constructSearchPageQuery } from '../dom';
 import { Storage } from '../storage';
 import { Galleries } from '../galleries';
+import { log } from '../utils';
 
 /**
  * Gallery page will never fully load
@@ -15,6 +16,9 @@ export const Gallery = (path) => {
   ];
 
   const { gID, cID } = parsePath(path);
+
+  log(gID, cID)
+
   if (gID && cID) {
     const url = `https://lichterphoto.photoshelter.com/gallery/${gID}/${cID}`;
     localStorage.setItem(Storage.QUERY_DATA, JSON.stringify({ gID, cID, url }));
