@@ -175,5 +175,6 @@ export const Gallery = {
 
     return images;
   }
-
 }
+
+

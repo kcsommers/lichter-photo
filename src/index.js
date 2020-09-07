@@ -1,10 +1,13 @@
 import './styles/main.scss';
 import { Storage } from './storage';
+import { log } from './utils';
 
 const loadScript = () => {
 
   const pathStart = 'https://lichterphoto.photoshelter.com';
   const path = window.location.pathname.replace(pathStart, '');
+
+  log('PATH:::: ', path);
 
   if (path === '/index' || path === '/') {
     window.location = 'https://lichterphoto.com';
@@ -55,7 +58,6 @@ const loadScript = () => {
   }
 
   return '';
-
 };
 
 

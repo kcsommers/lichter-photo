@@ -1,3 +1,4 @@
+
 export const getQueryParams = () => {
 
   if (window.location.search) {
@@ -16,3 +17,11 @@ export const getQueryParams = () => {
 
   return null;
 }
+
+export const log = (...args) => {
+  if (process.env.NODE_ENV === 'development') {
+    console.log.apply(console, args);
+
+  }
+};
+
