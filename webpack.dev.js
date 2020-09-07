@@ -18,8 +18,14 @@ module.exports = merge(common, {
       "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization",
       "Content-Type": "text/html; chartset=utf-8"
     },
-    // index: 'index.bundle.js',
-    contentBase: './dist',
-    useLocalIp: true
+    index: 'index.bundle.js',
+    contentBase: path.join(__dirname, 'dist'),
+    useLocalIp: true,
+  },
+  output: {
+    filename: '[name].bundle.js',
+    chunkFilename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: 'https://10.0.0.39:8080/'
   },
 })

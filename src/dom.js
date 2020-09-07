@@ -71,70 +71,28 @@ export const appendFilterTags = function (gID, cID, searchTerm, isAnd) {
   }
 };
 
-// const checkboxChanged = (searchTerm, isChecked) => {
-//   const path = window.location.href;
-//   const searchTermMatch = path.match(/(I_DSC=)(.*?)(?=&)/);
-//   if (!searchTerm) {
-//     // get search term from url
-//     searchTerm = searchTermMatch && searchTermMatch[2];
-//   }
+export const clampDescription = (mainContainer, descriptionContainer) => {
+  if (mainContainer && descriptionContainer) {
 
-//   if (!searchTerm) {
-//     // if url doesnt work look in local storage
-//     const queryData = localStorage.getItem(Storage.QUERY_DATA)
-//     const storageData = JSON.parse(queryData);
-//     searchTerm = (storageData && storageData.searchTerm) || '';
-//   }
+    const descriptionHeight = descriptionContainer.getBoundingClientRect().height;
 
-//   let newSearchTerm = isChecked ?
-//     searchTerm
-//       .replace(/(\+)?showcase/i, '')
-//       .replace(/(\+)?featured/i, '')
-//     + '+portrait'
-//     : searchTerm.replace(/\+portrait/i, '');
+    if (descriptionHeight > 70) {
+      descriptionContainer.classList.add('kc-description')
+      const showMoreBtn = document.createElement('span');
+      showMoreBtn.textContent = 'Show More';
+      showMoreBtn.classList.add('kc-showmore-btn');
 
-//   let newPath = path
-//     .replace(`I_DSC=${searchTerm}`, `I_DSC=${newSearchTerm}`)
-//     .replace('I_DSC_AND=f', 'I_DSC_AND=t');;
-//   if (!path.includes('I_DSC_AND=t')) {
-//     newPath = newPath + '&I_DSC_AND=t';
-//   }
-//   // set the window location to the new path
-//   window.location = newPath;
+      showMoreBtn.addEventListener('click', (e) => {
+        if (descriptionContainer.classList.contains('open')) {
+          e.target.textContent = 'Show More';
+          descriptionContainer.classList.remove('open');
+        } else {
+          descriptionContainer.classList.add('open');
+          e.target.textContent = 'Show Less';
+        }
+      });
 
-// }
-
-// export const appendPortraitCheckbox = (searchTerm, isChecked) => {
-//   // Checkbox container
-//   const checkboxContainer = document.createElement('div');
-//   checkboxContainer.classList.add('kc-portrait-checkbox-container');
-
-//   // Checkmark
-//   const checkmark = document.createElement('div');
-//   checkmark.classList.add('kc-portrait-checkbox-checkmark');
-
-//   // Styled checkbox
-//   const styledCheckbox = document.createElement('div');
-//   styledCheckbox.classList.add('kc-styled-portrait-checkbox');
-//   styledCheckbox.appendChild(checkmark);
-
-//   // Checkbox input
-//   const checkbox = document.createElement('input');
-//   checkbox.setAttribute('type', 'checkbox');
-//   checkbox.checked = isChecked;
-//   checkbox.id = 'kc-portrait-checkbox';
-//   checkbox.addEventListener('change', (e) => { checkboxChanged(searchTerm, e.target.checked) });
-
-//   // Checkbox label
-//   const label = document.createElement('label');
-//   label.classList.add('kc-portrait-checkbox-label');
-//   label.htmlFor = 'kc-portrait-checkbox'
-//   const labelText = document.createTextNode('Portraits');
-//   label.appendChild(checkbox);
-//   label.appendChild(styledCheckbox);
-//   label.appendChild(labelText);
-
-//   checkboxContainer.appendChild(label);
-//   const filtersContainer = document.querySelector('.kc-filters-container');
-//   filtersContainer.appendChild(checkboxContainer);
-// };
+      mainContainer.insertBefore(showMoreBtn, mainContainer.children[3]);
+    }
+  }
+}

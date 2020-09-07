@@ -9,20 +9,6 @@
             opacity: 1;
         }
 
-        .kc-description-wrap {
-            max-width: 80em;
-            padding-right: 25%;
-            line-height: 1.9;
-            font-size: 1.08em;
-            font-family: 'Quicksand',sans-serif;
-            color: #5a606e;
-        }
-        @media only screen and (max-width: 800px) {
-            .kc-description-wrap {
-                padding-right: 0px;
-            }
-        }
-
         .dataBox {
             >.name {
                 opacity: 0;

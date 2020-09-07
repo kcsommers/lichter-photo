@@ -105,3 +105,7 @@ export const GalleryFilters = {
     ]
   }
 };
+
+const noFilterGals = [
+  Galleries.LIMITED_EDITION
+];

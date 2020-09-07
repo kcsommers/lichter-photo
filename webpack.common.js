@@ -8,21 +8,21 @@ module.exports = {
     polyfill: 'babel-polyfill',
     index: './src/index.js'
   },
-  output: {
-    filename: '[name].bundle.js',
-    chunkFilename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+  resolve: {
+    extensions: ['.js']
   },
   module: {
     rules: [
       {
         test: /\.js$/,
+        exclude: [/node_modules/],
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env']
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/syntax-dynamic-import']
           }
-        }
+        },
       },
       {
         test: /\.(css|scss)$/,
@@ -37,15 +37,15 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: 'Lichter Photo'
+      title: 'Lichter Photo',
     }),
     new MiniCssExtractPlugin({
       filename: 'kc-main.css'
     })
-  ]
+  ],
   // optimization: {
   //   splitChunks: {
   //     chunks: 'all'
   //   }
-  // },
+  // }
 };
