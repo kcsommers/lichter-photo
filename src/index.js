@@ -2,8 +2,6 @@ import './styles/main.scss';
 import { Storage } from './storage';
 import { log } from './utils';
 
-
-
 const loadScript = () => {
 
   const pathStart = 'https://lichterphoto.photoshelter.com';
@@ -34,6 +32,7 @@ const loadScript = () => {
   }
 
   if (path.startsWith('/gallery') && !path.startsWith('/gallery-collection')) {
+    console.log('HIT GALLLLLLLLLLL  ')
     import(
       /* webpackChunkName: "gallery" */
       './page-scripts/gallery'
@@ -66,6 +65,8 @@ const loadScript = () => {
 (function () {
 
   const page = loadScript();
+
+  log('PAGE:::: ', page)
 
   if (page) {
 

@@ -8,6 +8,8 @@ export const Search = {
     /**
      * Remove brackets from images found
      */
+
+    console.log('SERACH INIT:::::::: ',)
     const nameDiv = document.querySelector('.name');
     if (nameDiv) {
       nameDiv.textContent = nameDiv.textContent.replace(/[\{\}(found)]/g, '').trim();

@@ -39,7 +39,7 @@ export const getGalleryImagesWithSearch = (gID, searchTerms, page) => {
     }
   };
 
-  const url = `${baseUrl}/media/search?terms=${searchTerms}&galleries=${gID}&sort_by=file_name&sort_dir=desc&page=${page}&per_page=10&extend=${JSON.stringify(extension)}`;
+  const url = `${baseUrl}/media/search?terms=${searchTerms}&galleries=${gID}&sort_by=file_name&sort_dir=asc&page=${page}&per_page=10&extend=${JSON.stringify(extension)}`;
 
   return requestData(apiOptions(url));
 }
@@ -59,7 +59,7 @@ export const getGalleryImages = (gID, page) => {
     }
   };
 
-  const url = `${baseUrl}/gallery/${gID}/images?page=${page}&per_page=10&sort_by=file_name&sort_dir=desc&extend=${JSON.stringify(extension)}`;
+  const url = `${baseUrl}/gallery/${gID}/images?page=${page}&per_page=10&sort_by=file_name&sort_dir=asc&extend=${JSON.stringify(extension)}`;
 
   return requestData(apiOptions(url));
 };

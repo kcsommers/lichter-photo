@@ -3,15 +3,8 @@ import { GalleryFilters } from '../galleries';
 import { getGalleryImages, getGalleryInfo, getGalleryImagesWithSearch } from '../photoshelter-api';
 import { getQueryParams, log } from '../utils';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-
-library.add(faArrowLeft, faArrowRight)
-window.FontAwesomeConfig = {
-  searchPseudoElements: true
-}
-
-const baseUrl = 'https://lichter-wrapper.webflow.io/gallery';
+const wrapperUrl = 'https://lichter-wrapper.webflow.io/gallery';
+const photoshelterUrl = 'https://lichterphoto.photoshelter.com';
 
 export const Gallery = {
 
@@ -42,8 +35,13 @@ export const Gallery = {
 
   init: function () {
 
+    log('GAL INIT::::')
+
     for (const c in this.elements) {
-      this.elements[c].classList.remove('w-container');
+      if (this.elements[c]) {
+        this.elements[c].classList.remove('w-container');
+
+      }
     }
 
     attachSpinner(this.elements.details);
@@ -89,18 +87,18 @@ export const Gallery = {
               this.updateImages();
             })
             .catch(err => console.error(err))
-
         }
 
       })
       .catch(err => console.error(err))
   },
 
-  updateImages: function () {
+  updateImages: function (newFilter) {
 
-    const currentImages = this.imgMap.get(this.currentPage);
+    const currentImages = (!newFilter && typeof newFilter !== 'string') && this.imgMap.get(this.currentPage);
 
     if (currentImages) {
+
       const imagesWrap = document.createElement('div');
       imagesWrap.classList.add('kc-gallery-images-inner');
 
@@ -111,6 +109,8 @@ export const Gallery = {
 
         const thumbTag = document.createElement('a');
         thumbTag.classList.add('kc-thumb-tag');
+        thumbTag.setAttribute('href', img.href);
+        console.log('HFRE:::: ', img, thumbTag.href);
 
         const thumb = document.createElement('img');
         thumb.classList.add('kc-thumb');
@@ -134,6 +134,8 @@ export const Gallery = {
 
         log('CURRENT PAGE IMAGES:::: ', this.imgMap.get(this.currentPage));
 
+        this.updatePagination();
+        this.updateTotal();
         this.updateImages();
       })
       .catch(err => console.error(err))
@@ -178,11 +180,11 @@ export const Gallery = {
     const navInner = document.createElement('div');
     navInner.classList.add('kc-nav-inner');
 
-    const totalContainer = document.createElement('div');
-    totalContainer.classList.add('kc-total-container');
-    totalContainer.innerText = this.totalImages + ' images';
+    this.elements.totalContainer = document.createElement('div');
+    this.elements.totalContainer.classList.add('kc-total-container');
+    this.elements.totalContainer.innerText = this.totalImages + ' images';
 
-    navInner.appendChild(totalContainer);
+    navInner.appendChild(this.elements.totalContainer);
 
     const pagination = document.createElement('div');
     pagination.classList.add('kc-gallery-pagination');
@@ -223,15 +225,14 @@ export const Gallery = {
     filterObj.filters.forEach(f => {
       const tag = document.createElement('a');
       tag.classList.add(f.isSpecial ? 'kc-filter-tag-special' : 'kc-filter-tag');
-      tag.setAttribute('data-params', `G_ID=${this.queryParams.G_ID}&C_ID=${this.queryParams.C_ID || ''}&gallery=${this.queryParams.gallery || ''}&q=${f.keyword}`);
+      tag.setAttribute('data-params', `?q=${f.keyword}&G_ID=${this.queryParams.G_ID}&C_ID=${this.queryParams.C_ID || ''}`);
+      tag.addEventListener('click', this.updateFilter.bind(this));
 
       if (
         (this.queryParams.q && f.keyword && this.queryParams.q.includes(f.keyword)) ||
         (!this.queryParams.q && !f.keyword)
       ) {
         tag.classList.add('kc-filter-tag-active');
-      } else {
-        tag.addEventListener('click', this.updateFilter.bind(this));
       }
 
       tag.appendChild(document.createTextNode(f.name));
@@ -242,11 +243,34 @@ export const Gallery = {
 
   },
 
+  updateTotal: function () {
+    this.elements.totalContainer.innerText = `${this.totalImages} Images`;
+  },
+
   updateFilter: function (event) {
     console.log('EVETN:::: ', event.target, event.target.dataset)
-    const dataset = event.target.dataset;
-    if (dataset && dataset.params) {
-      this.queryParams = getQueryParams(dataset.params);
+    if (!event.target.classList.contains('kc-filter-tag-active')) {
+      const dataset = event.target.dataset;
+
+      if (dataset && dataset.params) {
+
+        this.elements.images.childNodes[0].remove();
+        attachSpinner(this.elements.images);
+
+        const currentTag = document.querySelector('.kc-filter-tag-active');
+        if (currentTag) {
+          currentTag.classList.remove('kc-filter-tag-active');
+        }
+
+        event.target.classList.add('kc-filter-tag-active');
+
+        this.currentPage = 1;
+        this.queryParams = getQueryParams(dataset.params);
+        const newUrl = window.location.origin + window.location.pathname + dataset.params
+        window.history.pushState({ path: newUrl }, '', newUrl);
+
+        this.updateImages(this.queryParams.q);
+      }
     }
   },
 
@@ -311,7 +335,8 @@ export const Gallery = {
             images.push({
               image_id: m.Image.image_id,
               file_name: m.file_name,
-              src: m.Image.Link.base
+              src: m.Image.Link.base,
+              href: `${photoshelterUrl}/gallery-image/${this.name.replace(' ', '-')}/${this.queryParams.G_ID}/${m.Image.image_id}/${this.queryParams.C_ID || ''}`
             })
           })
 
@@ -331,7 +356,8 @@ export const Gallery = {
             images.push({
               image_id: g.image_id,
               file_name: g.Image.file_name,
-              src: g.ImageLink.base
+              src: g.ImageLink.base,
+              href: `${photoshelterUrl}/gallery-image/${this.name.replace(' ', '-')}/${this.queryParams.G_ID}/${g.image_id}/${this.queryParams.C_ID || ''}`
             });
           });
 
