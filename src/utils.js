@@ -27,3 +27,34 @@ export const log = (...args) => {
   }
 };
 
+const parsePath = (path) => {
+  const queryData = localStorage.getItem(Storage.QUERY_DATA);
+  const queryDataParsed = queryData && JSON.parse(queryData);
+
+  const gIDMatch = path.match(/(G_ID=)(.*?)(?=&)/);
+  const cIDMatch = path.match(/(C_ID=)(.*?)(?=&)/);
+  const searchTermMatch = path.match(/(I_DSC=)(.*?)(?=&)/);
+  const isAndMatch = path.match(/(I_DSC_AND=)(t|f)/);
+
+  let gID, cID, searchTerm, isAnd;
+  if (gIDMatch) {
+    gID = gIDMatch[2];
+  } else if (queryDataParsed && queryDataParsed.gID) {
+    gID = queryDataParsed.gID;
+  }
+  if (cIDMatch) {
+    cID = cIDMatch[2];
+  } else if (queryDataParsed && queryDataParsed.cID) {
+    cID = queryDataParsed.cID;
+  }
+  if (searchTermMatch) {
+    searchTerm = searchTermMatch[2];
+  } else if (queryDataParsed && queryDataParsed.searchTerm) {
+    searchTerm = queryDataParsed.searchTerm;
+  }
+  if (isAndMatch) {
+    isAnd = isAndMatch[0];
+  }
+
+  return { gID, cID, searchTerm, isAnd }
+};

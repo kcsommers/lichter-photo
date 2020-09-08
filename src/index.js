@@ -31,18 +31,6 @@ const loadScript = () => {
     return 'gallery-collection'
   }
 
-  if (path.startsWith('/gallery') && !path.startsWith('/gallery-collection')) {
-    console.log('HIT GALLLLLLLLLLL  ')
-    import(
-      /* webpackChunkName: "gallery" */
-      './page-scripts/gallery'
-    )
-      .then(m => m.Gallery.init())
-      .catch(err => console.error(err));
-
-    return 'gallery';
-  }
-
   if (path.startsWith('/search-page')) {
     return 'search-page';
   }
