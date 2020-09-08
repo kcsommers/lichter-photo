@@ -26,6 +26,6 @@ module.exports = merge(common, {
     filename: '[name].bundle.js',
     chunkFilename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: 'https://10.0.0.39:8080/'
+    publicPath: 'https://10.0.0.95:8080/'
   },
 })

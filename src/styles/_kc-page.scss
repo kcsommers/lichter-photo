@@ -1,23 +1,6 @@
 .kc-page {
     // search results page
     &.kc-search-page {
-        .c1title {
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        .kc-c1title-visible {
-            opacity: 1;
-        }
-
-        .dataBox {
-            >.name {
-                opacity: 0;
-                transition: opacity 0.2s ease;
-            }
-            >.kc-name-visible {
-                opacity: 1;
-            }
-        }
         // remove labels under images
         .thumbs >.image >.info {
             display: none;

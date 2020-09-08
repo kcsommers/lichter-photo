@@ -3,7 +3,12 @@
     "@babel/plugin-syntax-dynamic-import"
   ],
   "presets": [
-    "minify",
+    [
+      "minify",
+      {
+        "builtIns": false
+      }
+    ],
     [
       "@babel/env",
       {

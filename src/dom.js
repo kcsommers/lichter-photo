@@ -1,4 +1,5 @@
 import { GalleryFilters } from './galleries';
+import { subtract } from 'lodash';
 
 export const constructSearchPageQuery = (gID, cID, searchTerm, isAnd) => {
   // will be the a tags href
@@ -95,4 +96,67 @@ export const clampDescription = (mainContainer, descriptionContainer) => {
       mainContainer.insertBefore(showMoreBtn, mainContainer.children[3]);
     }
   }
-}
+};
+
+export const attachSpinner = (container) => {
+
+  if (container) {
+    const spinnerWrap = document.createElement('div');
+    spinnerWrap.classList.add('kc-spinner-wrap');
+
+    const spinner = document.createElement('div');
+    spinner.classList.add('kc-spinner');
+
+    spinnerWrap.appendChild(spinner);
+
+    container.appendChild(spinnerWrap);
+  }
+};
+
+export const removeSpinner = (container) => {
+  if (container) {
+
+    for (let i = 0; i < container.childNodes.length; i++) {
+      if (container.childNodes[i].classList.contains('kc-spinner-wrap')) {
+        container.childNodes[i].remove();
+        break;
+      }
+    }
+
+  }
+};
+
+export const removeAllSpinners = () => {
+  const spinners = document.querySelectorAll('.kc-spinner-wrap');
+
+  if (spinners) {
+    spinners.forEach(s => s.remove());
+  }
+
+};
+
+export const showErrorMessage = (msg, container) => {
+  if (container) {
+
+    const errorContainer = document.createElement('div');
+    errorContainer.classList.add('kc-error-container');
+
+    const title = document.createElement('h1');
+    title.classList.add('kc-error-title');
+    title.innerText = 'Error';
+
+    const subTitle = document.createElement('p');
+    subTitle.classList.add('kc-error-subtitle');
+    subTitle.innerText = 'Sorry, we encountered an error';
+
+    const error = document.createElement('div');
+    error.classList.add('kc-error');
+    error.innerText = msg;
+
+    errorContainer.appendChild(title)
+    errorContainer.appendChild(subTitle)
+    errorContainer.appendChild(error)
+
+    container.appendChild(errorContainer);
+  }
+};

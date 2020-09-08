@@ -22,7 +22,8 @@ export const GalleryFilters = {
     keywords: [
       'showcase',
       'featured'
-    ]
+    ],
+    isSpecial: false
   },
   [Galleries.LIMITED_EDITION]: {
     filters: [
@@ -102,7 +103,8 @@ export const GalleryFilters = {
       'Decorative',
       'maa15',
       'maa20'
-    ]
+    ],
+    isSpecial: true
   }
 };
 

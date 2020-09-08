@@ -1,3 +1,5 @@
+import { resolve } from 'path';
+
 const http = require('http');
 
 const baseUrl = '/psapi/v3';
@@ -45,9 +47,6 @@ export const getGalleryImagesWithSearch = (gID, searchTerms, page) => {
 export const getGalleryImages = (gID, page) => {
 
   const extension = {
-    "GalleryImage": {
-      "fields": "image_id",
-    },
     "Image": {
       "fields": "file_name,img_id",
     },
@@ -60,7 +59,7 @@ export const getGalleryImages = (gID, page) => {
     }
   };
 
-  const url = `${baseUrl}/gallery/${gID}?sort_by=file_name&sort_dir=desc&page=${page}&per_page=10&extend=${JSON.stringify(extension)}`;
+  const url = `${baseUrl}/gallery/${gID}/images?page=${page}&per_page=10&sort_by=file_name&sort_dir=desc&extend=${JSON.stringify(extension)}`;
 
   return requestData(apiOptions(url));
 };
@@ -84,5 +83,3 @@ const requestData = (options) => {
     });
   });
 };
-
-// const path = `/psapi/v3/gallery/G0000z5GWRYpQAlU/images`;

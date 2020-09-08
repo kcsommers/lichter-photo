@@ -1,7 +1,9 @@
 
-export const getQueryParams = () => {
+export const getQueryParams = (query) => {
 
-  if (window.location.search) {
+  const toParse = query || window.location.search;
+
+  if (toParse) {
     const query = window.location.search.substr(1);
 
     const result = {};

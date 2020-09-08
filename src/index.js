@@ -2,6 +2,8 @@ import './styles/main.scss';
 import { Storage } from './storage';
 import { log } from './utils';
 
+
+
 const loadScript = () => {
 
   const pathStart = 'https://lichterphoto.photoshelter.com';
@@ -51,7 +53,7 @@ const loadScript = () => {
       /* webpackChunkName: "search" */
       './page-scripts/search'
     )
-      .then(m => m.Search())
+      .then(m => m.Search.init())
       .catch(err => console.error(err));
 
     return 'search';
