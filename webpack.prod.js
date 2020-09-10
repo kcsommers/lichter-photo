@@ -8,6 +8,6 @@ module.exports = merge(common, {
     filename: '[name].bundle.js',
     chunkFilename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: 'https://cdn.jsdelivr.net/gh/kcsommers/lichter-photo@0.1.0/dist/'
+    publicPath: 'https://cdn.jsdelivr.net/gh/kcsommers/lichter-photo@1.0.0/dist/'
   },
 });
