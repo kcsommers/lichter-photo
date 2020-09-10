@@ -46,6 +46,26 @@
                 display: none;
             }
         }
+
+        a.psCartAddLink {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+
+            &.kc-add-to-cart-visible {
+                opacity: 1;
+            }
+        }
+
+        .more dl {
+            dt:nth-child(2) {
+                display: none;
+            }
+        }
+
+        a.addthis_button_facebook_like,
+        a.addthis_button_linkedin {
+            display: none;
+        }
     }
 
     &.kc-search-page-page {

@@ -35,8 +35,9 @@ export const parsePath = (path) => {
   const cIDMatch = path.match(/(C_ID=)(.*?)(?=&)/);
   const searchTermMatch = path.match(/(I_DSC=)(.*?)(?=&)/);
   const isAndMatch = path.match(/(I_DSC_AND=)(t|f)/);
+  const offsetMatch = path.match(/(_bqO=[0-9]+)/);
 
-  let gID, cID, searchTerm, isAnd;
+  let gID, cID, searchTerm, isAnd, offset;
   if (gIDMatch) {
     gID = gIDMatch[2];
   } else if (queryDataParsed && queryDataParsed.gID) {
@@ -55,6 +56,9 @@ export const parsePath = (path) => {
   if (isAndMatch) {
     isAnd = isAndMatch[0];
   }
+  if (offsetMatch) {
+    offset = offsetMatch[0];
+  }
 
-  return { gID, cID, searchTerm, isAnd }
+  return { gID, cID, searchTerm, isAnd, offset }
 };

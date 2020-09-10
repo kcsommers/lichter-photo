@@ -12,6 +12,17 @@ export const Image = {
 
     this.removeCopyright();
 
+    this.setAddToCartText();
+
+  },
+
+  setAddToCartText: function () {
+    const btn = document.querySelector('a.psCartAddLink');
+
+    if (btn) {
+      btn.textContent = 'Print Purchase Options';
+      btn.classList.add('kc-add-to-cart-visible');
+    }
   },
 
   centerNav: function () {
@@ -43,7 +54,7 @@ export const Image = {
               // Update title with gallery name
               if (backLink) {
                 backLink.textContent = resParsed.data.Gallery.name;
-                backLink.href = constructSearchPageQuery(queryData.gID, queryData.cID, queryData.searchTerm || '');
+                backLink.href = constructSearchPageQuery(queryData.gID, queryData.cID, queryData.searchTerm || '', queryData.offset || '');
                 backLink.classList.add('kc-search-results-link-visible');
               }
             }
