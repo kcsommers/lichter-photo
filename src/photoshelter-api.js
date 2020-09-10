@@ -1,5 +1,3 @@
-import { resolve } from 'path';
-
 const http = require('http');
 
 const baseUrl = '/psapi/v3';

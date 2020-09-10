@@ -27,7 +27,7 @@ export const log = (...args) => {
   }
 };
 
-const parsePath = (path) => {
+export const parsePath = (path) => {
   const queryData = localStorage.getItem(Storage.QUERY_DATA);
   const queryDataParsed = queryData && JSON.parse(queryData);
 

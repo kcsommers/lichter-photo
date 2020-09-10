@@ -27,17 +27,14 @@ export const appendFilterTags = function (gID, cID, searchTerm, isAnd) {
   const filterTags = gallery.filters.map(f => {
     const tag = document.createElement('a');
 
-    if (!isSpecialGal) {
-      tag.classList.add('kc-filter-tag');
-    } else {
-      tag.classList.add('kc-filter-tag-special');
-    }
+    tag.classList.add(!gallery.isSpecial ? 'kc-filter-tag' : 'kc-filter-tag-special');
 
     // add the active class if searchterm includes the keyword
     if (f.keyword && searchTerm.includes(f.keyword)) {
-      tag.classList.add('active');
+      tag.classList.add('kc-filter-tag-active');
     } else {
-      tag.href = constructSearchPageQuery(gID, cID, constructSearchTerm(searchTerm, f.keyword, gallery.keywords), isAnd);
+
+      tag.setAttribute('href', constructSearchPageQuery(gID, cID, constructSearchTerm(searchTerm, f.keyword, gallery.keywords), isAnd));
     }
 
     tag.appendChild(document.createTextNode(f.name));
@@ -46,8 +43,8 @@ export const appendFilterTags = function (gID, cID, searchTerm, isAnd) {
   });
 
   // if none of the tags are active, the view all tag (which is always first in the array) should be
-  if (!filterTags.some(t => t.classList.contains('active'))) {
-    filterTags[0].classList.add('active');
+  if (!filterTags.some(t => t.classList.contains('kc-filter-tag-active'))) {
+    filterTags[0].classList.add('kc-filter-tag-active');
     filterTags[0].removeAttribute('href');
   }
 

@@ -17,6 +17,13 @@ const loadScript = () => {
   if (path.startsWith('/image') || path.startsWith('/gallery-image')) {
     // /image === from search results
     // /gallery-image === from gallery
+    import(
+      /* webpackChunkName: "image" */
+      './page-scripts/image'
+    )
+      .then(m => m.Image.init())
+      .catch(err => console.error(err));
+
     return 'image';
   }
 
@@ -32,6 +39,13 @@ const loadScript = () => {
   }
 
   if (path.startsWith('/search-page')) {
+    import(
+      /* webpackChunkName: "search-page" */
+      './page-scripts/search-page'
+    )
+      .then(m => m.SearchPage.init())
+      .catch(err => console.error(err));
+
     return 'search-page';
   }
 

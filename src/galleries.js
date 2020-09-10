@@ -108,6 +108,6 @@ export const GalleryFilters = {
   }
 };
 
-const noFilterGals = [
-  Galleries.LIMITED_EDITION
+export const safeGalleries = [
+  'limited edition'
 ];
