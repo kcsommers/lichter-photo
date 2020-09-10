@@ -33,12 +33,13 @@ export const Search = {
 
   setPagination: function () {
     const paginationDiv = document.querySelector('.pagination');
+    const prevTag = document.querySelector('.page_previous');
+    const nextTag = document.querySelector('.page_next');
+    const countDiv = document.querySelector('.count');
+
     if (paginationDiv) {
 
       const appendedQuery = `&I_DSC=${this.queryParams.searchTerm}&I_DSC_AND=${this.queryParams.isAnd}&G_ID=${this.queryParams.gID}&C_ID=${this.queryParams.cID}`;
-
-      const prevTag = document.querySelector('.page_previous');
-      const nextTag = document.querySelector('.page_next');
 
       if (nextTag) {
         nextTag.href = nextTag.href + appendedQuery;
@@ -57,7 +58,49 @@ export const Search = {
         }
       });
     }
+
+    if (countDiv) {
+      countDiv.style.position = 'relative';
+      countDiv.style.cursor = 'pointer';
+
+      const countMatch = countDiv.textContent.match(/(\bof\b )([0-9]+)$/g);
+      if (countMatch && countMatch[0]) {
+        const totalPages = +countMatch[0].split(' ')[1];
+        const url = nextTag ? nextTag.href : prevTag ? prevTag.href : '';
+
+        if (totalPages && url) {
+
+          const dropdown = document.createElement('div');
+          dropdown.classList.add('kc-pagination-dropdown');
+
+          for (let i = 0; i < totalPages; i++) {
+            const pageTag = document.createElement('a');
+            pageTag.classList.add('kc-page-tag');
+            pageTag.textContent = `${i + 1}`;
+            pageTag.setAttribute('href', url.replace(/_bqO=[0-9]+/, `_bqO=${i * 100}`))
+            dropdown.appendChild(pageTag);
+          }
+
+          countDiv.appendChild(dropdown);
+
+          countDiv.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.add('kc-pagination-dropdown-visible');
+
+            const removeClass = (e) => {
+              e.stopPropagation();
+              dropdown.classList.remove('kc-pagination-dropdown-visible');
+              document.removeEventListener('click', removeClass)
+            }
+
+            document.addEventListener('click', removeClass)
+          });
+
+        }
+      }
+    }
   },
+
 
   setGalleryDetails: function () {
 
@@ -111,4 +154,3 @@ export const Search = {
   }
 
 };
-
