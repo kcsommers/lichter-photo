@@ -1,6 +1,10 @@
 import './styles/main.scss';
 import { Storage } from './storage';
 import { log } from './utils';
+import { Image } from './page-scripts/image';
+import { GalleryCollection } from './page-scripts/gallery-collection';
+import { SearchPage } from './page-scripts/search-page';
+import { Search } from './page-scripts/search';
 
 const loadScript = () => {
 
@@ -17,45 +21,57 @@ const loadScript = () => {
   if (path.startsWith('/image') || path.startsWith('/gallery-image')) {
     // /image === from search results
     // /gallery-image === from gallery
-    import(
-      /* webpackChunkName: "image" */
-      './page-scripts/image'
-    )
-      .then(m => m.Image.init())
-      .catch(err => console.error(err));
+
+    Image.init();
+
+    // import(
+    //   /* webpackChunkName: "image" */
+    //   './page-scripts/image'
+    // )
+    //   .then(m => m.Image.init())
+    //   .catch(err => console.error(err));
 
     return 'image';
   }
 
   if (path.startsWith('/gallery-collection')) {
-    import(
-      /* webpackChunkName: "gallery-collection" */
-      './page-scripts/gallery-collection'
-    )
-      .then(m => m.GalleryCollection.init())
-      .catch(err => console.error(err));
+
+    GalleryCollection.init();
+
+    // import(
+    //   /* webpackChunkName: "gallery-collection" */
+    //   './page-scripts/gallery-collection'
+    // )
+    //   .then(m => m.GalleryCollection.init())
+    //   .catch(err => console.error(err));
 
     return 'gallery-collection'
   }
 
   if (path.startsWith('/search-page')) {
-    import(
-      /* webpackChunkName: "search-page" */
-      './page-scripts/search-page'
-    )
-      .then(m => m.SearchPage.init())
-      .catch(err => console.error(err));
+
+    SearchPage.init();
+
+    // import(
+    //   /* webpackChunkName: "search-page" */
+    //   './page-scripts/search-page'
+    // )
+    //   .then(m => m.SearchPage.init())
+    //   .catch(err => console.error(err));
 
     return 'search-page';
   }
 
   if (path.startsWith('/search') && !path.startsWith('/search-page')) {
-    import(
-      /* webpackChunkName: "search" */
-      './page-scripts/search'
-    )
-      .then(m => m.Search.init())
-      .catch(err => console.error(err));
+
+    Search.init();
+
+    // import(
+    //   /* webpackChunkName: "search" */
+    //   './page-scripts/search'
+    // )
+    //   .then(m => m.Search.init())
+    //   .catch(err => console.error(err));
 
     return 'search';
   }
