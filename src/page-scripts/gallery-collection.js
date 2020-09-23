@@ -4,9 +4,11 @@ import { safeGalleries } from '../galleries';
 export const GalleryCollection = {
 
   init: function () {
-    clampDescription(document.querySelector('div.content'), document.querySelector('div.description'));
+    document.addEventListener('DOMContentLoaded', () => {
+      clampDescription(document.querySelector('div.content'), document.querySelector('div.description'));
 
-    this.hijackThumbTags();
+      this.hijackThumbTags();
+    });
   },
 
   hijackThumbTags: function () {

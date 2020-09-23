@@ -6,13 +6,17 @@ export const Image = {
 
   init: function () {
 
-    this.centerNav();
+    document.addEventListener('DOMContentLoaded', () => {
 
-    this.setBackLink();
+      this.centerNav();
 
-    this.removeCopyright();
+      this.setBackLink();
 
-    this.setAddToCartText();
+      this.removeCopyright();
+
+      this.setAddToCartText();
+
+    });
 
   },
 

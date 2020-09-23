@@ -79,7 +79,6 @@ const loadScript = () => {
   return '';
 };
 
-
 (function () {
 
   const page = loadScript();

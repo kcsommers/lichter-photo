@@ -9,18 +9,22 @@ export const Search = {
 
   init: function () {
 
-    // get query params from path
-    this.queryParams = parsePath(window.location.href);
-    localStorage.setItem(Storage.QUERY_DATA, JSON.stringify(this.queryParams));
+    document.addEventListener('DOMContentLoaded', () => {
 
-    // Remove brackets from images found
-    this.removeBracketsFromTotal();
+      // get query params from path
+      this.queryParams = parsePath(window.location.href);
+      localStorage.setItem(Storage.QUERY_DATA, JSON.stringify(this.queryParams));
 
-    // update pagination arrows
-    this.setPagination();
+      // Remove brackets from images found
+      this.removeBracketsFromTotal();
 
-    // set gallery details
-    this.setGalleryDetails();
+      // update pagination arrows
+      this.setPagination();
+
+      // set gallery details
+      this.setGalleryDetails();
+
+    });
   },
 
   removeBracketsFromTotal: function () {
