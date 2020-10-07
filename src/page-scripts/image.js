@@ -103,8 +103,6 @@ export const Image = {
       more.prepend(printBtn);
       more.prepend(descriptionDiv);
     }
-
-    console.log('DESCR:::: ', filename, filenameLabel)
   }
 
 };
