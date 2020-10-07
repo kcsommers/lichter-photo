@@ -12,9 +12,9 @@ export const Image = {
 
       this.setBackLink();
 
-      this.removeCopyright();
-
       this.setAddToCartText();
+
+      this.reorderShit();
 
     });
 
@@ -72,14 +72,39 @@ export const Image = {
     }
   },
 
-  removeCopyright: function () {
+  reorderShit: function () {
+    const more = document.querySelector('.more');
     const dl = document.querySelector('dl');
-    if (dl) {
-      const cpLabel = dl.children[2];
-      const cpName = dl.children[3];
-      dl.removeChild(cpLabel);
-      dl.removeChild(cpName);
+
+    const printBtn = document.querySelector('.add_to_cart_link');
+    const lightboxBtn = document.querySelector('.add_to_lightbox_link');
+
+    const description = document.querySelector('.description');
+    const descriptionDiv = document.createElement('div');
+
+    const filenameLabel = document.querySelector('dl dt:first-child');
+    const filename = document.querySelector('dl dd:nth-child(2)');
+    const filenameDl = document.createElement('dl');
+
+    if (more) {
+      more.removeChild(printBtn);
+      more.removeChild(lightboxBtn);
+      more.removeChild(description);
+
+      dl.removeChild(filenameLabel);
+      dl.removeChild(filename);
+
+      descriptionDiv.appendChild(description);
+      filenameDl.appendChild(filenameLabel);
+      filenameDl.appendChild(filename);
+      descriptionDiv.appendChild(filenameDl);
+
+      more.prepend(lightboxBtn);
+      more.prepend(printBtn);
+      more.prepend(descriptionDiv);
     }
+
+    console.log('DESCR:::: ', filename, filenameLabel)
   }
 
 };
