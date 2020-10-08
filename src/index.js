@@ -9,11 +9,14 @@ import { Search } from './page-scripts/search';
 const loadScript = () => {
 
   const pathStart = 'https://lichterphoto.photoshelter.com';
+
   const path = window.location.pathname.replace(pathStart, '');
+  log('PATH:::: ', path, window.location);
 
-  log('PATH:::: ', path);
-
-  if (path === '/index' || path === '/') {
+  if (
+    (path === '/index' || path === '/') &&
+    (!window.location.href || !window.location.href.includes('?edit'))
+  ) {
     window.location = 'https://lichterphoto.com';
     return;
   }
