@@ -39,30 +39,18 @@
         .kc-search-results-link-visible {
             opacity: 1;
         }
-
-
-        div.social {
-            display: none;
-        }
-
-        div.more {
-            >h1,
-            >dl {
-                dt:nth-child(1),
-                dd:nth-child(2),
-                dt:nth-child(3),
-                dd:nth-child(4) {
-                    display: none;
-                }
-            }
-        }
-
         a.psCartAddLink {
             opacity: 0;
             transition: opacity 0.2s ease;
 
             &.kc-add-to-cart-visible {
                 opacity: 1;
+            }
+        }
+
+        .more {
+            >*:not(:first-child) {
+                display: none;
             }
         }
 

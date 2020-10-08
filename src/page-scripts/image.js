@@ -76,33 +76,124 @@ export const Image = {
     const more = document.querySelector('.more');
     const dl = document.querySelector('dl');
 
-    const printBtn = document.querySelector('.add_to_cart_link');
-    const lightboxBtn = document.querySelector('.add_to_lightbox_link');
+    if (more && dl) {
 
-    const description = document.querySelector('.description');
-    const descriptionDiv = document.createElement('div');
+      const printBtn = document.querySelector('.add_to_cart_link');
+      const lightboxBtn = document.querySelector('.add_to_lightbox_link');
 
-    const filenameLabel = document.querySelector('dl dt:first-child');
-    const filename = document.querySelector('dl dd:nth-child(2)');
-    const filenameDl = document.createElement('dl');
+      const description = document.querySelector('.description');
 
-    if (more) {
-      more.removeChild(printBtn);
-      more.removeChild(lightboxBtn);
-      more.removeChild(description);
+      const filenameLabel = Array.from(dl.children).find(c => c.textContent === 'Filename');
+      const filename = filenameLabel && filenameLabel.nextElementSibling;
 
-      dl.removeChild(filenameLabel);
-      dl.removeChild(filename);
+      const keywordsList = document.querySelector('.keywords-list');
+      const keywordsLabel = keywordsList && keywordsList.previousElementSibling;
 
-      descriptionDiv.appendChild(description);
-      filenameDl.appendChild(filenameLabel);
-      filenameDl.appendChild(filename);
-      descriptionDiv.appendChild(filenameDl);
+      const galleriesLabel = Array.from(dl.children).find(c => c.textContent === 'Contained in galleries');
+      const galleries = galleriesLabel && galleriesLabel.nextElementSibling;
 
-      more.prepend(lightboxBtn);
-      more.prepend(printBtn);
-      more.prepend(descriptionDiv);
+      const newContainer = document.createElement('div');
+      let newDl, newDl2;
+
+      if (description) {
+        more.removeChild(description);
+        newContainer.appendChild(description);
+      }
+
+      if (filenameLabel) {
+        newDl = document.createElement('dl');
+        dl.removeChild(filenameLabel);
+        newDl.appendChild(filenameLabel);
+      }
+
+      if (filename) {
+        if (!newDl) {
+          newDl = document.createElement('dl');
+        }
+        dl.removeChild(filename);
+        newDl.appendChild(filename);
+      }
+
+      if (newDl) {
+        newContainer.appendChild(newDl);
+      }
+
+      if (printBtn) {
+        more.removeChild(printBtn);
+        newContainer.appendChild(printBtn);
+      }
+
+      if (lightboxBtn) {
+        more.removeChild(lightboxBtn);
+        newContainer.appendChild(lightboxBtn);
+      }
+
+      if (keywordsLabel) {
+        newDl2 = document.createElement('dl');
+        dl.removeChild(keywordsLabel);
+        newDl2.appendChild(keywordsLabel);
+      }
+
+      if (keywordsList) {
+        if (!newDl2) {
+          newDl2 = document.createElement('dl');
+        }
+        dl.removeChild(keywordsList);
+        newDl2.appendChild(keywordsList);
+      }
+
+      if (galleriesLabel) {
+        if (!newDl2) {
+          newDl2 = document.createElement('dl');
+        }
+        dl.removeChild(galleriesLabel);
+        newDl2.appendChild(galleriesLabel);
+      }
+
+      if (galleries) {
+        if (!newDl2) {
+          newDl2 = document.createElement('dl');
+        }
+        dl.removeChild(galleries);
+        newDl2.appendChild(galleries);
+      }
+
+      if (newDl2) {
+        newContainer.appendChild(newDl2);
+      }
+
+      more.prepend(newContainer);
+
     }
+
+
+    // const printBtn = document.querySelector('.add_to_cart_link');
+    // const lightboxBtn = document.querySelector('.add_to_lightbox_link');
+
+    // const description = document.querySelector('.description');
+    // const descriptionDiv = document.createElement('div');
+
+    // const filenameLabel = document.querySelector('dl dt:first-child');
+    // const filename = document.querySelector('dl dd:nth-child(2)');
+    // const filenameDl = document.createElement('dl');
+
+    // if (more) {
+    //   more.removeChild(printBtn);
+    //   more.removeChild(lightboxBtn);
+    //   more.removeChild(description);
+
+    //   dl.removeChild(filenameLabel);
+    //   dl.removeChild(filename);
+
+    //   descriptionDiv.appendChild(description);
+    //   filenameDl.appendChild(filenameLabel);
+    //   filenameDl.appendChild(filename);
+    //   descriptionDiv.appendChild(filenameDl);
+
+    //   more.prepend(lightboxBtn);
+    //   more.prepend(printBtn);
+    //   more.prepend(descriptionDiv);
+    // }
   }
 
 };
