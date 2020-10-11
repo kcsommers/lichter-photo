@@ -1,29 +1,62 @@
 export const Galleries = {
-  LIMITED_EDITION: 'G0000BLnFwimsp4o'
+  LIMITED_EDITION: 'G0000BLnFwimsp4o',
+
+  LIFESTYLE: 'lifestyle'
 };
 
 // View all tag should always be last
 export const GalleryFilters = {
-  default: {
-    filters: [
-      {
-        name: 'View All',
-        keyword: ''
-      },
-      {
-        name: 'Top Picks',
-        keyword: 'showcase'
-      },
-      {
-        name: 'Featured',
-        keyword: 'featured'
-      }
-    ],
-    keywords: [
-      'showcase',
-      'featured'
-    ],
-    isSpecial: false
+  default: (galleryName) => {
+
+    if (galleryName && galleryName.toLowerCase().includes('lifestyle')) {
+      const nameSplit = galleryName.split(' ');
+      return GalleryFilters[Galleries.LIFESTYLE](nameSplit[0], nameSplit[1]);
+    }
+
+    return {
+      filters: [
+        {
+          name: 'View All',
+          keyword: ''
+        },
+        {
+          name: 'Top Picks',
+          keyword: 'showcase'
+        },
+        {
+          name: 'Featured',
+          keyword: 'featured'
+        }
+      ],
+      keywords: [
+        'showcase',
+        'featured'
+      ],
+      isSpecial: false
+    }
+  },
+  [Galleries.LIFESTYLE]: (firstName, lastName) => {
+    return {
+      filters: [
+        {
+          name: 'View All',
+          keyword: ''
+        },
+        {
+          name: 'Top Picks',
+          keyword: `showcase+${firstName}+${lastName}+portrait`
+        },
+        {
+          name: 'Featured',
+          keyword: 'featured'
+        }
+      ],
+      keywords: [
+        `showcase\\+${firstName}\\+${lastName}\\+portrait`,
+        'featured'
+      ],
+      isSpecial: false
+    }
   },
   [Galleries.LIMITED_EDITION]: {
     filters: [
@@ -111,3 +144,17 @@ export const GalleryFilters = {
 export const safeGalleries = [
   'limited edition'
 ];
+
+export const getLifestyleQuery = (galleryName) => {
+  if (!galleryName) {
+    return '';
+  }
+
+  if (galleryName.toLowerCase().includes('lifestyle')) {
+    const nameSplit = galleryName.split('-');
+    return `${nameSplit[0]}+${nameSplit[1]}+portrait`;
+  }
+
+  return '';
+};
+

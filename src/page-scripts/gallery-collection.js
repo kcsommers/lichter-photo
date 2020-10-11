@@ -1,5 +1,5 @@
 import { clampDescription, constructSearchPageQuery } from '../dom';
-import { safeGalleries } from '../galleries';
+import { getLifestyleQuery, safeGalleries } from '../galleries';
 
 export const GalleryCollection = {
 
@@ -21,8 +21,17 @@ export const GalleryCollection = {
 
         const { cID, gID, name } = this.parseHref(tag.href);
 
+
         if (cID && gID && name && !safeGalleries.includes(name.toLowerCase())) {
-          tag.setAttribute('href', constructSearchPageQuery(gID, cID, 'showcase'));
+
+          let query = 'showcase';
+
+          const lifestyleQuery = getLifestyleQuery(name);
+          if (lifestyleQuery) {
+            query += `+${lifestyleQuery}`;
+          }
+
+          tag.setAttribute('href', constructSearchPageQuery(gID, cID, query));
         }
       });
 
