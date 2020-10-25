@@ -30,6 +30,10 @@ export const getGalleryInfo = (gID) => {
   return requestData(apiOptions(`${baseUrl}/gallery/${gID}`));
 };
 
+export const getCollectionRootPath = (cID) => {
+  return requestData(apiOptions(`${baseUrl}/collection/${cID}/root_path`));
+}
+
 export const getGalleryImagesWithSearch = (gID, searchTerms, page) => {
   const extension = {
     "ImageLink": {

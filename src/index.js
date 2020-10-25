@@ -96,7 +96,9 @@ const loadScript = () => {
       html.classList.add(`kc-${page}-page`);
     }
 
-  } else {
+  }
+  else {
+    log('Removing QUERY_DATA from storage');
     localStorage.removeItem(Storage.QUERY_DATA);
   }
 

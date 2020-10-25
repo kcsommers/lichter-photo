@@ -1,3 +1,44 @@
+.kc-sub-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    a {
+        float: none;
+    }
+}
+
+.kc-breadcrumbs-wrap {
+    >a {
+        margin: 0;
+        font-size: 12px;
+        color: #eba073;
+        text-transform: none;
+        // font-weight: normal;
+        position: relative;
+        margin-right: 15px;
+        &:hover {
+            color: #c35a1c;
+        }
+
+        &:not(:first-child) {
+            margin-left: 15px;
+
+            &::before {
+                font-family: 'icon-set';
+                content: "\0065";
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: 100%;
+                width: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+}
+
 .kc-interact {
     display: flex;
     margin-bottom: 0.5rem;

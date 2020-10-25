@@ -1,9 +1,9 @@
 import { GalleryFilters } from './galleries';
-import { subtract } from 'lodash';
+import { baseUrl } from './utils';
 
 export const constructSearchPageQuery = (gID, cID, searchTerm, isAnd, offset) => {
   // will be the a tags href
-  return `https://lichterphoto.photoshelter.com/search?I_DSC=${searchTerm}&${isAnd || 'I_DSC_AND=t'}&G_ID=${gID}&C_ID=${cID}&_ACT=usrSearch${offset ? '&' + offset : ''}`;
+  return `${baseUrl}/search?I_DSC=${searchTerm}&${isAnd || 'I_DSC_AND=t'}&G_ID=${gID}&C_ID=${cID}&_ACT=usrSearch${offset ? '&' + offset : ''}`;
 };
 
 export const constructSearchTerm = (currentSearch, newFilter, allGalleryFilters) => {

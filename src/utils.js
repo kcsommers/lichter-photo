@@ -1,3 +1,4 @@
+export const baseUrl = 'https://lichterphoto.photoshelter.com';
 
 export const getQueryParams = (query) => {
 

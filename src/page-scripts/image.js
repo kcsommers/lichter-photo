@@ -1,16 +1,39 @@
 import { Storage } from "../storage";
-import { getGalleryInfo } from "../photoshelter-api";
+import { getCollectionRootPath, getGalleryInfo } from "../photoshelter-api";
 import { constructSearchPageQuery } from "../dom";
+import { baseUrl } from "../utils";
+
+const createBreadcrumb = (text, path) => {
+  const crumbTag = document.createElement('a');
+  crumbTag.classList.add('kc-breadcrumb');
+  crumbTag.href = path;
+  crumbTag.textContent = text;
+
+  return crumbTag;
+};
 
 export const Image = {
 
+  queryData: null,
+
   init: function () {
+
+    const queryDataFromStorage = localStorage.getItem(Storage.QUERY_DATA);
+
+    this.queryData = queryDataFromStorage && JSON.parse(queryDataFromStorage);
+
+    console.log('QUERYDATA:::: ', this.queryData)
 
     document.addEventListener('DOMContentLoaded', () => {
 
       this.centerNav();
 
-      this.setBackLink();
+      if (this.queryData) {
+        this.setBreadCrumbs();
+
+        // this.setBackLink();
+      }
+
 
       this.setAddToCartText();
 
@@ -44,21 +67,86 @@ export const Image = {
     }
   },
 
+  setBreadCrumbs: function () {
+    Promise.all([getGalleryInfo(this.queryData.gID), getCollectionRootPath(this.queryData.cID)])
+      .then(([galInfo, collectionPath]) => {
+        const galInfoParsed = galInfo && JSON.parse(galInfo).data;
+        const collectionPathParsed = collectionPath && JSON.parse(collectionPath).data;
+
+        if (galInfoParsed && collectionPathParsed) {
+          console.log('GAL:::: ', galInfoParsed);
+          console.log('COL:::: ', collectionPathParsed);
+
+          const galPath = constructSearchPageQuery(
+            this.queryData.gID,
+            this.queryData.cID,
+            this.queryData.searchTerm || '',
+            this.queryData.offset || ''
+          );
+
+          const galCrumb = createBreadcrumb(galInfoParsed.Gallery.name, galPath);
+          const breadcrumbs = [galCrumb];
+
+          collectionPathParsed.RootPath.forEach(p => {
+            if (p.collection_id === 'root_site') {
+              console.log('HUH')
+              breadcrumbs.push(createBreadcrumb('Archive', `${baseUrl}/archive`));
+            } else {
+              console.log('WHAT')
+              breadcrumbs.push(createBreadcrumb(p.name, `${baseUrl}/${p.name}/${p.collection_id}`));
+            }
+          });
+
+          const subnav = document.querySelector('.sub-nav');
+          if (subnav) {
+
+            subnav.removeChild(subnav.children[0]);
+            subnav.classList.add('kc-sub-nav');
+
+            const subnavTags = document.querySelectorAll('.sub-nav>a');
+            const subnavTagsWrap = document.createElement('div');
+
+            Array.from(subnavTags).forEach(t => {
+              subnavTagsWrap.prepend(t);
+            });
+
+            const breadcrumbsWrap = document.createElement('div');
+            breadcrumbsWrap.classList.add('kc-breadcrumbs-wrap');
+
+            breadcrumbs.forEach(c => {
+              breadcrumbsWrap.prepend(c);
+            });
+
+            subnav.appendChild(breadcrumbsWrap);
+            subnav.appendChild(subnavTagsWrap);
+          }
+        }
+
+      })
+      .catch(err => console.error(err));
+  },
+
   setBackLink: function () {
-    const queryDataFromStorage = localStorage.getItem(Storage.QUERY_DATA);
-    const queryData = queryDataFromStorage && JSON.parse(queryDataFromStorage);
     const backLink = document.querySelector('.search_results_link');
 
-    if (queryData && queryData.gID && queryData.cID) {
-      getGalleryInfo(queryData.gID)
+    if (this.queryData && this.queryData.gID && this.queryData.cID) {
+      getGalleryInfo(this.queryData.gID)
         .then(res => {
+
+          console.log('GALLERY INFO:::: ', res);
+
           if (res) {
             const resParsed = JSON.parse(res);
             if (resParsed.data && resParsed.data.Gallery && resParsed.data.Gallery.name) {
               // Update title with gallery name
               if (backLink) {
                 backLink.textContent = resParsed.data.Gallery.name;
-                backLink.href = constructSearchPageQuery(queryData.gID, queryData.cID, queryData.searchTerm || '', queryData.offset || '');
+                backLink.href = constructSearchPageQuery(
+                  this.queryData.gID,
+                  this.queryData.cID,
+                  this.queryData.searchTerm || '',
+                  this.queryData.offset || ''
+                );
                 backLink.classList.add('kc-search-results-link-visible');
               }
             }
