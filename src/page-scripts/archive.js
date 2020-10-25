@@ -2,17 +2,17 @@ import { clampDescription, constructSearchPageQuery } from '../dom';
 import { safeGalleries } from '../galleries';
 import { parseHref } from '../utils';
 
-export const GalleryCollection = {
+export const Archive = {
 
   init: function () {
     document.addEventListener('DOMContentLoaded', () => {
       clampDescription(document.querySelector('div.content'), document.querySelector('div.description'));
 
-      this.hijackThumbTags();
+      this.hijackGalleryThumbTags();
     });
   },
 
-  hijackThumbTags: function () {
+  hijackGalleryThumbTags: function () {
 
     const thumbTags = document.querySelectorAll('li.gallery>.thumbnail>a');
 
@@ -30,8 +30,6 @@ export const GalleryCollection = {
 
     }
 
-  },
+  }
 
 };
-
-

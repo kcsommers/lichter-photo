@@ -1,3 +1,5 @@
+import { resolve } from 'path';
+
 const http = require('http');
 
 const baseUrl = '/psapi/v3';
@@ -31,6 +33,15 @@ export const getGalleryInfo = (gID) => {
 };
 
 export const getCollectionRootPath = (cID) => {
+  if (cID === 'root_site') {
+    return new Promise((resolve, rj) => resolve(JSON.stringify({
+      data: {
+        RootPath: [{
+          collection_id: 'root_site'
+        }]
+      }
+    })))
+  }
   return requestData(apiOptions(`${baseUrl}/collection/${cID}/root_path`));
 }
 

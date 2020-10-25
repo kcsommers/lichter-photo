@@ -8,6 +8,11 @@
 }
 
 .kc-breadcrumbs-wrap {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    &.kc-breadcrumbs-wrap-visible {
+        opacity: 1;
+    }
     >a {
         margin: 0;
         font-size: 12px;

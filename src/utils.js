@@ -24,7 +24,6 @@ export const getQueryParams = (query) => {
 export const log = (...args) => {
   if (process.env.NODE_ENV === 'development') {
     console.log.apply(console, args);
-
   }
 };
 
@@ -32,13 +31,14 @@ export const parsePath = (path) => {
   const queryData = localStorage.getItem(Storage.QUERY_DATA);
   const queryDataParsed = queryData && JSON.parse(queryData);
 
-  const gIDMatch = path.match(/(G_ID=)(.*?)(?=&)/);
-  const cIDMatch = path.match(/(C_ID=)(.*?)(?=&)/);
+  const gIDMatch = path.match(/(G_ID=)(.*?)(?=&|$)/);
+  const cIDMatch = path.match(/(C_ID=)(.*?)(?=&|$)/);
   const searchTermMatch = path.match(/(I_DSC=)(.*?)(?=&)/);
   const isAndMatch = path.match(/(I_DSC_AND=)(t|f)/);
   const offsetMatch = path.match(/(_bqO=[0-9]+)/);
+  const bqHMatch = path.match(/(_bqH=)(.*?)(?=&|$)/);
 
-  let gID, cID, searchTerm, isAnd, offset;
+  let gID, cID, searchTerm, isAnd, offset, bqH;
   if (gIDMatch) {
     gID = gIDMatch[2];
   } else if (queryDataParsed && queryDataParsed.gID) {
@@ -60,6 +60,24 @@ export const parsePath = (path) => {
   if (offsetMatch) {
     offset = offsetMatch[0];
   }
+  if (bqHMatch) {
+    bqH = bqHMatch[2];
+  } else if (queryDataParsed && queryDataParsed.bqH) {
+    bqH = queryDataParsed.bqH;
+  }
 
-  return { gID, cID, searchTerm, isAnd, offset }
+  return { gID, cID, searchTerm, isAnd, offset, bqH };
 };
+
+export const parseHref = (path) => {
+
+  if (path) {
+    const pathSplit = path.split('/');
+    const cID = pathSplit[pathSplit.length - 1] || 'root_site';
+    const gID = pathSplit[pathSplit.length - 2];
+    const name = pathSplit[pathSplit.length - 3];
+
+    return { cID, gID, name };
+  }
+  return '';
+}

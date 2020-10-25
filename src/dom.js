@@ -1,9 +1,9 @@
 import { GalleryFilters } from './galleries';
 import { baseUrl } from './utils';
 
-export const constructSearchPageQuery = (gID, cID, searchTerm, isAnd, offset) => {
+export const constructSearchPageQuery = (gID, cID, searchTerm, isAnd, offset, bqH) => {
   // will be the a tags href
-  return `${baseUrl}/search?I_DSC=${searchTerm}&${isAnd || 'I_DSC_AND=t'}&G_ID=${gID}&C_ID=${cID}&_ACT=usrSearch${offset ? '&' + offset : ''}`;
+  return `${baseUrl}/search?I_DSC=${searchTerm}&${isAnd || 'I_DSC_AND=t'}&G_ID=${gID}&C_ID=${cID}&_ACT=usrSearch${offset ? '&' + offset : ''}${bqH ? '&_bqH=' + bqH : ''}`;
 };
 
 export const constructSearchTerm = (currentSearch, newFilter, allGalleryFilters) => {

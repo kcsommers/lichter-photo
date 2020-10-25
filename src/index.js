@@ -5,6 +5,7 @@ import { Image } from './page-scripts/image';
 import { GalleryCollection } from './page-scripts/gallery-collection';
 import { SearchPage } from './page-scripts/search-page';
 import { Search } from './page-scripts/search';
+import { Archive } from './page-scripts/archive';
 
 const loadScript = () => {
 
@@ -77,6 +78,20 @@ const loadScript = () => {
     //   .catch(err => console.error(err));
 
     return 'search';
+  }
+
+  if (path.startsWith('/archive')) {
+
+    Archive.init();
+
+    // import(
+    //   /* webpackChunkName: "search" */
+    //   './page-scripts/search'
+    // )
+    //   .then(m => m.Search.init())
+    //   .catch(err => console.error(err));
+
+    return 'archive';
   }
 
   return '';
