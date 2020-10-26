@@ -3,6 +3,7 @@ import { baseUrl } from './utils';
 
 export const constructSearchPageQuery = (gID, cID, searchTerm, isAnd, offset, bqH) => {
   // will be the a tags href
+
   return `${baseUrl}/search?I_DSC=${searchTerm}&${isAnd || 'I_DSC_AND=t'}&G_ID=${gID}&C_ID=${cID}&_ACT=usrSearch${offset ? '&' + offset : ''}${bqH ? '&_bqH=' + bqH : ''}`;
 };
 
@@ -18,11 +19,9 @@ export const constructSearchTerm = (currentSearch, newFilter, allGalleryFilters)
   return currentSearch;
 }
 
-export const appendFilterTags = function (gID, cID, searchTerm, isAnd) {
+export const appendFilterTags = function (gName, gID, cID, searchTerm, isAnd) {
 
-  const gallery = GalleryFilters[gID] || GalleryFilters.default;
-
-  const isSpecialGal = gID in GalleryFilters;
+  const gallery = GalleryFilters[gID] || GalleryFilters.default(gName);
 
   const filterTags = gallery.filters.map(f => {
     const tag = document.createElement('a');
@@ -59,7 +58,7 @@ export const appendFilterTags = function (gID, cID, searchTerm, isAnd) {
       filtersContainer.appendChild(filterTags[i]);
     }
 
-    if (!isSpecialGal) {
+    if (!gallery.isSpecial) {
       filtersContainer.append(filterTags[0]);
     } else {
       filtersContainer.prepend(filterTags[0]);

@@ -1,7 +1,7 @@
 import { Storage } from "../storage";
 import { getCollectionRootPath, getGalleryInfo } from "../photoshelter-api";
 import { constructSearchPageQuery } from "../dom";
-import { baseUrl } from "../utils";
+import { baseUrl, log } from "../utils";
 
 const createBreadcrumb = (text, path) => {
   const crumbTag = document.createElement('a');
@@ -17,6 +17,7 @@ export const Image = {
   queryData: null,
 
   init: function () {
+
 
     const queryDataFromStorage = localStorage.getItem(Storage.QUERY_DATA);
 
@@ -72,6 +73,7 @@ export const Image = {
   },
 
   setBreadCrumbs: function () {
+
     log('[setBreadCrumbs]:::: ', this.queryData)
 
     Promise.all([getGalleryInfo(this.queryData.gID), getCollectionRootPath(this.queryData.cID)])
@@ -97,11 +99,16 @@ export const Image = {
 
           collectionPathParsed.RootPath.forEach(p => {
 
+            if (p.collection_id === 'root_hidden') {
+              return;
+            }
+
             if (p.collection_id === 'root_site') {
               breadcrumbs.push(createBreadcrumb('Archive', `${baseUrl}/archive`));
-            } else {
-              breadcrumbs.push(createBreadcrumb(p.name, `${baseUrl}/gallery-collection/${p.name}/${p.collection_id}`));
+              return;
             }
+
+            breadcrumbs.push(createBreadcrumb(p.name, `${baseUrl}/gallery-collection/${p.name}/${p.collection_id}`));
           });
 
           const subnav = document.querySelector('.sub-nav');

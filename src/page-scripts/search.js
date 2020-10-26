@@ -13,6 +13,7 @@ export const Search = {
 
       // get query params from path
       this.queryParams = parsePath(window.location.href);
+
       localStorage.setItem(Storage.QUERY_DATA, JSON.stringify(this.queryParams));
 
       // Remove brackets from images found
@@ -45,12 +46,16 @@ export const Search = {
 
       const appendedQuery = `&I_DSC=${this.queryParams.searchTerm}&I_DSC_AND=${this.queryParams.isAnd}&G_ID=${this.queryParams.gID}&C_ID=${this.queryParams.cID}`;
 
+      let nextUrl, prevUrl;
+
       if (nextTag) {
-        nextTag.href = nextTag.href + appendedQuery;
+        nextUrl = nextTag.href + appendedQuery;
+        nextTag.href = nextUrl;
       }
 
       if (prevTag) {
-        prevTag.href = prevTag.href + appendedQuery;
+        prevUrl = prevTag.href + appendedQuery;
+        prevTag.href = prevUrl;
       }
 
       document.addEventListener('keyup', (e) => {
@@ -110,13 +115,6 @@ export const Search = {
 
     const c1Title = document.querySelector('.c1title');
 
-    appendFilterTags(
-      this.queryParams.gID || '',
-      this.queryParams.cID || '',
-      this.queryParams.searchTerm || '',
-      this.queryParams.isAnd
-    );
-
     // if theres no gallery id, we're coming directly from search page
     if (this.queryParams.gID) {
 
@@ -124,8 +122,17 @@ export const Search = {
       getGalleryInfo(this.queryParams.gID)
         .then(res => {
           if (res) {
+
             const resParsed = JSON.parse(res);
             if (resParsed.data && resParsed.data.Gallery) {
+
+              appendFilterTags(
+                resParsed.data.Gallery.name,
+                this.queryParams.gID || '',
+                this.queryParams.cID || '',
+                this.queryParams.searchTerm || '',
+                this.queryParams.isAnd
+              );
 
               // gallery name
               if (resParsed.data.Gallery.name && c1Title) {
