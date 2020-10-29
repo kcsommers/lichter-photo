@@ -150,12 +150,16 @@ export const Search = {
 
             // gallery description
             if (resParsed.data.Gallery.description) {
-              const headerDiv = document.querySelector('.content div:first-child')
-              if (headerDiv) {
+
+              const firstChild = document.querySelector('.content div:first-child')
+              if (firstChild) {
                 const descDiv = document.createElement('div');
                 descDiv.classList.add('kc-description-wrap');
                 descDiv.classList.add('kc-fade-in');
                 descDiv.innerHTML = resParsed.data.Gallery.description;
+
+                const headerDiv = firstChild.classList.contains('kc-breadcrumbs-wrap') ? firstChild.nextElementSibling : firstChild;
+
                 headerDiv.appendChild(descDiv);
                 clampDescription(headerDiv, descDiv);
               }

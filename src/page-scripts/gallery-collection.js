@@ -18,7 +18,6 @@ export const GalleryCollection = {
 
       this.hijackThumbTags();
 
-
       if (this.cID) {
         this.setBreadcrumbs();
       }
@@ -87,7 +86,7 @@ export const GalleryCollection = {
         }, []);
 
         createBreadCrumbs(breadcrumbs, breadcrumbsWrap, contentContainer);
-        contentContainer.removeChild(contentContainer.children[1]);
+        // contentContainer.removeChild(contentContainer.children[1]);
 
       })
       .catch(err => {
