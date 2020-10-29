@@ -1,6 +1,6 @@
-import { appendFilterTags, clampDescription } from '../dom';
-import { getGalleryInfo } from '../photoshelter-api';
-import { log, parsePath } from '../utils';
+import { appendFilterTags, clampDescription, createBreadCrumbs } from '../dom';
+import { getCollectionRootPath, getGalleryInfo } from '../photoshelter-api';
+import { baseUrl, log, parsePath } from '../utils';
 import { Storage } from '../storage';
 
 export const Search = {
@@ -19,11 +19,22 @@ export const Search = {
       // Remove brackets from images found
       this.removeBracketsFromTotal();
 
-      // update pagination arrows
-      this.setPagination();
+      // if theres no gallery id, we're coming directly from search page
+      if (this.queryParams.gID) {
+        // update pagination arrows
+        this.setPagination();
 
-      // set gallery details
-      this.setGalleryDetails();
+        // set gallery details
+        this.setGalleryDetails();
+
+        this.setBreadCrumbs();
+      }
+      else {
+        const c1Title = document.querySelector('.c1title');
+        if (c1Title) {
+          c1Title.classList.add('kc-c1title-visible');
+        }
+      }
 
     });
   },
@@ -115,53 +126,85 @@ export const Search = {
 
     const c1Title = document.querySelector('.c1title');
 
-    // if theres no gallery id, we're coming directly from search page
-    if (this.queryParams.gID) {
+    // call photoshelter api to get gallery info
+    getGalleryInfo(this.queryParams.gID)
+      .then(res => {
+        if (res) {
 
-      // call photoshelter api to get gallery info
-      getGalleryInfo(this.queryParams.gID)
-        .then(res => {
-          if (res) {
+          const resParsed = JSON.parse(res);
+          if (resParsed.data && resParsed.data.Gallery) {
 
-            const resParsed = JSON.parse(res);
-            if (resParsed.data && resParsed.data.Gallery) {
+            appendFilterTags(
+              resParsed.data.Gallery.name,
+              this.queryParams.gID || '',
+              this.queryParams.cID || '',
+              this.queryParams.searchTerm || '',
+              this.queryParams.isAnd
+            );
 
-              appendFilterTags(
-                resParsed.data.Gallery.name,
-                this.queryParams.gID || '',
-                this.queryParams.cID || '',
-                this.queryParams.searchTerm || '',
-                this.queryParams.isAnd
-              );
+            // gallery name
+            if (resParsed.data.Gallery.name && c1Title) {
+              c1Title.textContent = resParsed.data.Gallery.name;
+              c1Title.classList.add('kc-c1title-visible');
+            }
 
-              // gallery name
-              if (resParsed.data.Gallery.name && c1Title) {
-                c1Title.textContent = resParsed.data.Gallery.name;
-                c1Title.classList.add('kc-c1title-visible');
-              }
-
-              // gallery description
-              if (resParsed.data.Gallery.description) {
-                const headerDiv = document.querySelector('.content div:first-child')
-                if (headerDiv) {
-                  const descDiv = document.createElement('div');
-                  descDiv.classList.add('kc-description-wrap');
-                  descDiv.classList.add('kc-fade-in');
-                  descDiv.innerHTML = resParsed.data.Gallery.description;
-                  headerDiv.appendChild(descDiv);
-                  clampDescription(headerDiv, descDiv);
-                }
+            // gallery description
+            if (resParsed.data.Gallery.description) {
+              const headerDiv = document.querySelector('.content div:first-child')
+              if (headerDiv) {
+                const descDiv = document.createElement('div');
+                descDiv.classList.add('kc-description-wrap');
+                descDiv.classList.add('kc-fade-in');
+                descDiv.innerHTML = resParsed.data.Gallery.description;
+                headerDiv.appendChild(descDiv);
+                clampDescription(headerDiv, descDiv);
               }
             }
           }
-        }).catch(err => console.error(err));
+        }
+      }).catch(err => console.error(err));
+  },
 
+  setBreadCrumbs: function () {
+
+    log('[setBreadCrumbs]:::: ', this.queryData)
+
+    const contentContainer = document.querySelector('.content');
+
+    if (!contentContainer) {
       return;
     }
 
-    if (c1Title) {
-      c1Title.classList.add('kc-c1title-visible');
-    }
+    const breadcrumbsWrap = document.createElement('div');
+    breadcrumbsWrap.classList.add('kc-breadcrumbs-wrap');
+
+    contentContainer.prepend(breadcrumbsWrap);
+
+    getCollectionRootPath(this.queryParams.cID)
+      .then(collectionPath => {
+        const collectionPathParsed = collectionPath && JSON.parse(collectionPath).data;
+
+        const breadcrumbs = collectionPathParsed.RootPath.reduce((crumbs, p) => {
+
+          if (p.collection_id === 'root_hidden') {
+            return crumbs;
+          }
+
+          if (p.collection_id === 'root_site') {
+            crumbs.push({ text: 'Archive', path: `${baseUrl}/archive` });
+            return crumbs;
+          }
+
+          crumbs.push({ text: p.name, path: `${baseUrl}/gallery-collection/${p.name}/${p.collection_id}` });
+          return crumbs;
+        }, []);
+
+        createBreadCrumbs(breadcrumbs, breadcrumbsWrap, contentContainer);
+      })
+      .catch(err => {
+        contentContainer.removeChild(breadcrumbsWrap);
+        console.error(err);
+      })
   }
 
 };

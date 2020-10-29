@@ -156,3 +156,26 @@ export const showErrorMessage = (msg, container) => {
     container.appendChild(errorContainer);
   }
 };
+
+// breadcrumbs = { text, path }[]
+export const createBreadCrumbs = (breadcrumbs, wrap, container) => {
+
+  const crumbEl = (crumb) => {
+    const crumbTag = document.createElement('a');
+    crumbTag.classList.add('kc-breadcrumb');
+    crumbTag.href = crumb.path;
+    crumbTag.textContent = crumb.text;
+
+    return crumbTag;
+  };
+
+  breadcrumbs.forEach(c => {
+    wrap.prepend(crumbEl(c));
+  });
+
+  container.prepend(wrap);
+
+  setTimeout(() => {
+    wrap.classList.add('kc-breadcrumbs-wrap-visible');
+  });
+};
