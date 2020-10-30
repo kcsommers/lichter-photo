@@ -72,12 +72,7 @@ export const GalleryCollection = {
 
         const breadcrumbs = collectionPathParsed.RootPath.reduce((crumbs, p) => {
 
-          if (p.collection_id === 'root_hidden' || p.collection_id === this.cID) {
-            return crumbs;
-          }
-
-          if (p.collection_id === 'root_site') {
-            crumbs.push({ text: 'Archive', path: `${baseUrl}/archive` });
+          if (p.collection_id === 'root_hidden' || p.collection_id === this.cID || p.collection_id === 'root_site') {
             return crumbs;
           }
 
@@ -85,8 +80,14 @@ export const GalleryCollection = {
           return crumbs;
         }, []);
 
-        createBreadCrumbs(breadcrumbs, breadcrumbsWrap, contentContainer);
-        // contentContainer.removeChild(contentContainer.children[1]);
+        if (breadcrumbs.length) {
+          createBreadCrumbs(breadcrumbs, breadcrumbsWrap, contentContainer);
+          contentContainer.removeChild(contentContainer.children[1]);
+        }
+        else {
+          contentContainer.removeChild(breadcrumbsWrap);
+        }
+
 
       })
       .catch(err => {

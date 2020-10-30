@@ -190,12 +190,7 @@ export const Search = {
 
         const breadcrumbs = collectionPathParsed.RootPath.reduce((crumbs, p) => {
 
-          if (p.collection_id === 'root_hidden') {
-            return crumbs;
-          }
-
-          if (p.collection_id === 'root_site') {
-            crumbs.push({ text: 'Archive', path: `${baseUrl}/archive` });
+          if (p.collection_id === 'root_hidden' || p.collection_id === 'root_site') {
             return crumbs;
           }
 
