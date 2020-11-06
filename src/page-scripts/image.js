@@ -102,12 +102,7 @@ export const Image = {
 
           collectionPathParsed.RootPath.forEach(p => {
 
-            if (p.collection_id === 'root_hidden') {
-              return;
-            }
-
-            if (p.collection_id === 'root_site') {
-              breadcrumbs.push({ text: 'Archive', path: `${baseUrl}/archive` });
+            if (p.collection_id === 'root_hidden' || p.collection_id === 'root_site') {
               return;
             }
 
