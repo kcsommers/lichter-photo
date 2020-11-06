@@ -1,5 +1,5 @@
 import { clampDescription, constructSearchPageQuery, createBreadCrumbs } from '../dom';
-import { baseUrl, parseHref } from '../utils';
+import { baseUrl, parseHref, log } from '../utils';
 import { getLifestyleQuery, safeGalleries } from '../galleries';
 import { getCollectionRootPath } from '../photoshelter-api';
 
