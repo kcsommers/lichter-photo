@@ -26,15 +26,34 @@ export const GalleryCollection = {
 
   hijackThumbTags: function () {
 
-    const thumbTags = document.querySelectorAll('li.gallery>.thumbnail>a');
+    const collections = document.querySelectorAll('li.gallery');
 
-    if (!thumbTags) {
+    if (!collections) {
       return;
     }
 
-    thumbTags.forEach(tag => {
+    collections.forEach(c => {
 
-      const { cID, gID, name } = parseHref(tag.href);
+      if (!c.children || !c.children.length) {
+        return;
+      }
+
+      // li.gallery > div.thumbnail > a
+      const thumbTag = c.children[0].children && c.children[0].children[0];
+
+      // li.gallery > div.info > div.name > a
+      const nameTag = (
+        c.children[1] &&
+        c.children[1].children &&
+        c.children[1].children[0] &&
+        c.children[1].children[0].children
+      ) && c.children[1].children[0].children[0];
+
+      if (!thumbTag) {
+        return;
+      }
+
+      const { cID, gID, name } = parseHref(thumbTag.href);
 
       if (cID && gID && name) {
         let searchTerm = !safeGalleries.includes(name.toLowerCase()) ? 'showcase' : '';
@@ -44,10 +63,38 @@ export const GalleryCollection = {
           searchTerm += `+${lifestyleQuery}`;
         }
 
-        tag.setAttribute('href', constructSearchPageQuery(gID, cID, searchTerm));
+        thumbTag.setAttribute('href', constructSearchPageQuery(gID, cID, searchTerm));
+
+        if (nameTag) {
+          nameTag.setAttribute('href', constructSearchPageQuery(gID, cID, searchTerm));
+        }
 
       }
+
     });
+
+    // const thumbTags = document.querySelectorAll('li.gallery>.thumbnail>a');
+
+    // if (!thumbTags) {
+    //   return;
+    // }
+
+    // thumbTags.forEach(tag => {
+
+    //   const { cID, gID, name } = parseHref(tag.href);
+
+    //   if (cID && gID && name) {
+    //     let searchTerm = !safeGalleries.includes(name.toLowerCase()) ? 'showcase' : '';
+
+    //     const lifestyleQuery = getLifestyleQuery(name);
+    //     if (lifestyleQuery) {
+    //       searchTerm += `+${lifestyleQuery}`;
+    //     }
+
+    //     tag.setAttribute('href', constructSearchPageQuery(gID, cID, searchTerm));
+
+    //   }
+    // });
 
   },
 
