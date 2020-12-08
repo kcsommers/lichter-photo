@@ -1,6 +1,6 @@
-import { Storage } from "../storage";
+import { Storage } from "../../../core/storage";
 
-export const SearchPage = {
+export const Search = {
 
   init: function () {
     localStorage.removeItem(Storage.QUERY_DATA);

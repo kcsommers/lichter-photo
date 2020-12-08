@@ -6,7 +6,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   entry: {
     polyfill: 'babel-polyfill',
-    index: './src/index.js'
+    index: './src/index.js',
+    galleryCollectionWF: './src/pages/webflow/gallery-collection/gallery-collection.webflow.js'
   },
   resolve: {
     extensions: ['.js']

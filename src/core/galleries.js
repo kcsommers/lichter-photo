@@ -1,7 +1,7 @@
 export const Galleries = {
   LIMITED_EDITION: 'G0000BLnFwimsp4o',
 
-  LIFESTYLE: 'lifestyle'
+  LIFESTYLE: 'lifestyle',
 };
 
 // View all tag should always be last

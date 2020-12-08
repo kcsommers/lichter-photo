@@ -1,7 +1,7 @@
-import { clampDescription, constructSearchPageQuery, createBreadCrumbs } from '../dom';
-import { baseUrl, parseHref, log } from '../utils';
-import { getLifestyleQuery, safeGalleries } from '../galleries';
-import { getCollectionRootPath } from '../photoshelter-api';
+import { clampDescription, constructSearchPageQuery, createBreadCrumbs } from '../../../core/helpers/dom';
+import { SITE_URL, parseHref, log } from '../../../core/helpers/utils';
+import { getLifestyleQuery, safeGalleries } from '../../../core/galleries';
+import { getCollectionRootPath } from '../../../core/helpers/photoshelter-api';
 
 export const GalleryCollection = {
 
@@ -73,29 +73,6 @@ export const GalleryCollection = {
 
     });
 
-    // const thumbTags = document.querySelectorAll('li.gallery>.thumbnail>a');
-
-    // if (!thumbTags) {
-    //   return;
-    // }
-
-    // thumbTags.forEach(tag => {
-
-    //   const { cID, gID, name } = parseHref(tag.href);
-
-    //   if (cID && gID && name) {
-    //     let searchTerm = !safeGalleries.includes(name.toLowerCase()) ? 'showcase' : '';
-
-    //     const lifestyleQuery = getLifestyleQuery(name);
-    //     if (lifestyleQuery) {
-    //       searchTerm += `+${lifestyleQuery}`;
-    //     }
-
-    //     tag.setAttribute('href', constructSearchPageQuery(gID, cID, searchTerm));
-
-    //   }
-    // });
-
   },
 
   setBreadcrumbs: function () {
@@ -123,7 +100,7 @@ export const GalleryCollection = {
             return crumbs;
           }
 
-          crumbs.push({ text: p.name, path: `${baseUrl}/gallery-collection/${p.name}/${p.collection_id}` });
+          crumbs.push({ text: p.name, path: `${SITE_URL}/gallery-collection/${p.name}/${p.collection_id}` });
           return crumbs;
         }, []);
 

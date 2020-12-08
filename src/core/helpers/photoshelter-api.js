@@ -1,5 +1,3 @@
-import { resolve } from 'path';
-
 const http = require('http');
 
 const baseUrl = '/psapi/v3';
@@ -9,8 +7,9 @@ const headers = {
 };
 const apiOptions = (path) => ({ host, path, headers });
 
-export const getGalleryThumbs = (cID) => {
+export const getCollection = (cID) => {
   const extend = {
+    Children: {},
     Gallery: {},
     MediaCount: {
       fields: 'images'
@@ -23,9 +22,19 @@ export const getGalleryThumbs = (cID) => {
     }
   };
 
-  const path = `${baseUrl}/collection/${cID}/children?extend=${JSON.stringify(extend)}`;
+  const path = `${baseUrl}/collection/${cID}?extend=${JSON.stringify(extend)}`;
 
-  return requestData(apiOptions(path));
+  const tap = (res) => {
+    const resParsed = JSON.parse(res);
+
+    if (!resParsed.data || !resParsed.data.Collection) {
+      return resParsed;
+    }
+
+    return resParsed.data.Collection;
+  };
+
+  return requestData(apiOptions(path), tap);
 };
 
 export const getGalleryInfo = (gID) => {
@@ -77,7 +86,7 @@ export const getGalleryImages = (gID, page) => {
   return requestData(apiOptions(url));
 };
 
-const requestData = (options) => {
+const requestData = (options, tap) => {
 
   return new Promise((resolve, reject) => {
     http.get(options, (res) => {
@@ -88,7 +97,7 @@ const requestData = (options) => {
       });
 
       res.on('end', () => {
-        resolve(data);
+        resolve(tap ? tap(data) : data);
       });
 
     }).on('error', (e) => {

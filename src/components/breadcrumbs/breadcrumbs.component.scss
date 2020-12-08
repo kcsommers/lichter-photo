@@ -1,0 +1,49 @@
+.kc-breadcrumbs-wrap {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    left: 20px;
+    &.kc-breadcrumbs-wrap-visible {
+        opacity: 1;
+    }
+    >a {
+        text-decoration: none;
+        margin: 0;
+        font-size: 12px;
+        color: #eba073;
+        text-transform: none;
+        font-weight: bold;
+        letter-spacing: 2px;
+        position: relative;
+        transition: all 0.2s ease;
+        margin-right: 15px;
+        &:hover {
+            color: #c35a1c;
+        }
+
+        &:not(:first-child) {
+            margin-left: 15px;
+        }
+
+        &::before {
+            font-family: 'icon-set';
+            content: "\0065";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 100%;
+            width: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &.kc-breadcrumb-tag-webflow::before {
+            font-family: FontAwesome;
+            content: "\f060";
+        }
+    }
+}

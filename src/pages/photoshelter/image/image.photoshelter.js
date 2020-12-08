@@ -1,7 +1,7 @@
-import { Storage } from "../storage";
-import { getCollectionRootPath, getGalleryInfo } from "../photoshelter-api";
-import { constructSearchPageQuery, createBreadCrumbs } from "../dom";
-import { baseUrl, log } from "../utils";
+import { Storage } from "../../../core/storage";
+import { getCollectionRootPath, getGalleryInfo } from "../../../core/helpers/photoshelter-api";
+import { constructSearchPageQuery, createBreadCrumbs } from "../../../core/helpers/dom";
+import { SITE_URL, log } from "../../../core/helpers/utils";
 
 
 export const Image = {
@@ -106,7 +106,7 @@ export const Image = {
               return;
             }
 
-            breadcrumbs.push({ text: p.name, path: `${baseUrl}/gallery-collection/${p.name}/${p.collection_id}` });
+            breadcrumbs.push({ text: p.name, path: `${SITE_URL}/gallery-collection/${p.name}/${p.collection_id}` });
           });
 
           createBreadCrumbs(breadcrumbs, breadcrumbsWrap, dataBox);
@@ -122,74 +122,6 @@ export const Image = {
         console.error(err);
       });
   },
-
-  // setBreadCrumbs: function () {
-
-  //   log('[setBreadCrumbs]:::: ', this.queryData)
-
-  //   Promise.all([getGalleryInfo(this.queryData.gID), getCollectionRootPath(this.queryData.cID)])
-  //     .then(([galInfo, collectionPath]) => {
-  //       const galInfoParsed = galInfo && JSON.parse(galInfo).data;
-  //       const collectionPathParsed = collectionPath && JSON.parse(collectionPath).data;
-
-  //       log('PATH INFO:::: ', galInfoParsed, collectionPathParsed)
-
-  //       if (galInfoParsed && collectionPathParsed) {
-
-  //         const galPath = constructSearchPageQuery(
-  //           this.queryData.gID,
-  //           this.queryData.cID,
-  //           this.queryData.searchTerm || '',
-  //           this.queryData.isAnd || '',
-  //           this.queryData.offset || '',
-  //           this.queryData.bqH || ''
-  //         );
-
-  //         const galCrumb = createBreadcrumb(galInfoParsed.Gallery.name, galPath);
-  //         const breadcrumbs = [galCrumb];
-
-  //         collectionPathParsed.RootPath.forEach(p => {
-
-  //           if (p.collection_id === 'root_hidden') {
-  //             return;
-  //           }
-
-  //           if (p.collection_id === 'root_site') {
-  //             breadcrumbs.push(createBreadcrumb('Archive', `${baseUrl}/archive`));
-  //             return;
-  //           }
-
-  //           breadcrumbs.push(createBreadcrumb(p.name, `${baseUrl}/gallery-collection/${p.name}/${p.collection_id}`));
-  //         });
-
-  //         const subnav = document.querySelector('.sub-nav');
-  //         if (subnav) {
-  //           subnav.removeChild(subnav.children[0]);
-  //           subnav.classList.add('kc-sub-nav');
-  //           const subnavTags = document.querySelectorAll('.sub-nav>a');
-  //           const subnavTagsWrap = document.createElement('div');
-
-  //           Array.from(subnavTags).forEach(t => {
-  //             subnavTagsWrap.prepend(t);
-  //           });
-
-  //           const breadcrumbsWrap = document.createElement('div');
-  //           breadcrumbsWrap.classList.add('kc-breadcrumbs-wrap');
-
-  //           breadcrumbs.forEach(c => {
-  //             breadcrumbsWrap.prepend(c);
-  //           });
-
-  //           subnav.appendChild(breadcrumbsWrap);
-  //           subnav.appendChild(subnavTagsWrap);
-
-  //           breadcrumbsWrap.classList.add('kc-breadcrumbs-wrap-visible');
-  //         }
-  //       }
-
-  //     })
-  //     .catch(err => console.error(err));
-  // },
 
   setBackLink: function () {
     const backLink = document.querySelector('.search_results_link');

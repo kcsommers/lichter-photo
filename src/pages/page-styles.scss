@@ -1,3 +1,7 @@
+@import './photoshelter/image/image.photoshelter.scss';
+@import './photoshelter/search-results/search-results.photoshelter.scss';
+@import './webflow/gallery-collection/gallery-collection.webflow.scss';
+
 .kc-page {
     // search results page
     &.kc-search-page {

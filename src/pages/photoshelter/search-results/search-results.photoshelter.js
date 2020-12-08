@@ -1,9 +1,9 @@
-import { appendFilterTags, clampDescription, createBreadCrumbs } from '../dom';
-import { getCollectionRootPath, getGalleryInfo } from '../photoshelter-api';
-import { baseUrl, log, parsePath } from '../utils';
-import { Storage } from '../storage';
+import { appendFilterTags, clampDescription, createBreadCrumbs } from '../../../core/helpers/dom';
+import { getCollectionRootPath, getGalleryInfo } from '../../../core/helpers/photoshelter-api';
+import { SITE_URL, log, parsePath } from '../../../core/helpers/utils';
+import { Storage } from '../../../core/storage';
 
-export const Search = {
+export const SearchResults = {
 
   queryParams: null,
 
@@ -194,7 +194,7 @@ export const Search = {
             return crumbs;
           }
 
-          crumbs.push({ text: p.name, path: `${baseUrl}/gallery-collection/${p.name}/${p.collection_id}` });
+          crumbs.push({ text: p.name, path: `${SITE_URL}/gallery-collection/${p.name}/${p.collection_id}` });
           return crumbs;
         }, []);
 

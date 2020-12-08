@@ -1,0 +1,50 @@
+h2.kc-gallery-title {
+    font-family: Quicksand, sans-serif;
+    text-transform: uppercase;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #5a606e;
+    line-height: 1.5;
+}
+
+h3.kc-gallery-total {
+    font-family: Quicksand, sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #5a606e;
+    font-weight: normal;
+    line-height: 1.5;
+}
+
+div.kc-description-container {
+    transition: opacity 0.2s ease;
+    margin: 1rem 0;
+    &.kc-description-hidden {
+        opacity: 0;
+    }
+}
+
+div.kc-description {
+    font-family: Quicksand, sans-serif;
+    font-size: 16px;
+    color: #5a606e;
+    line-height: 1.5;
+    max-height: none;
+    overflow: hidden;
+
+    &.kc-description-clamped {
+        max-height: 75px;
+    }
+}
+
+span.kc-showmore-btn {
+    font-family: Quicksand, sans-serif;
+    color: #eba073;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    &:hover {
+        color: #c35a1c;
+    }
+}

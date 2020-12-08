@@ -1,6 +1,6 @@
-import { clampDescription, constructSearchPageQuery } from '../dom';
-import { safeGalleries } from '../galleries';
-import { parseHref } from '../utils';
+import { clampDescription, constructSearchPageQuery } from '../../../core/helpers/dom';
+import { safeGalleries } from '../../../core/galleries';
+import { parseHref } from '../../../core/helpers/utils';
 
 export const Archive = {
 

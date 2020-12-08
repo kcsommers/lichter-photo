@@ -1,11 +1,11 @@
 import './styles/main.scss';
-import { Storage } from './storage';
-import { log } from './utils';
-import { Image } from './page-scripts/image';
-import { GalleryCollection } from './page-scripts/gallery-collection';
-import { SearchPage } from './page-scripts/search-page';
-import { Search } from './page-scripts/search';
-import { Archive } from './page-scripts/archive';
+import { Storage } from './core/storage';
+import { log } from './core/helpers/utils';
+import { Image } from './pages/photoshelter/image/image.photoshelter';
+import { GalleryCollection } from './pages/photoshelter/gallery-collection/gallery-collection.photoshelter';
+import { Search } from './pages/photoshelter/search/search.photoshelter';
+import { SearchResults } from './pages/photoshelter/search-results/search-results.photoshelter';
+import { Archive } from './pages/photoshelter/archive/archive.photoshelter';
 
 const loadScript = () => {
 
@@ -54,7 +54,7 @@ const loadScript = () => {
 
   if (path.startsWith('/search-page')) {
 
-    SearchPage.init();
+    Search.init();
 
     // import(
     //   /* webpackChunkName: "search-page" */
@@ -68,7 +68,7 @@ const loadScript = () => {
 
   if (path.startsWith('/search') && !path.startsWith('/search-page')) {
 
-    Search.init();
+    SearchResults.init();
 
     // import(
     //   /* webpackChunkName: "search" */
