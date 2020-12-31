@@ -13,12 +13,19 @@ export const GalleryCollectionWF = {
 
     attachSpinner(document.querySelector('.kc-gallery-body'));
 
-    const queryParams = getQueryParams();
+    // const queryParams = getQueryParams();
+
+    const collectionIdDiv = document.querySelector('div.kc-collection-id');
+    if (!collectionIdDiv) {
+      return;
+    }
+
+    const queryParams = { C_ID: collectionIdDiv.textContent };
 
     const breadCrumbs = new BreadCrumbs(queryParams, document.querySelector('.kc-breadcrumbs-container'), true);
     breadCrumbs.create();
 
-    if (queryParams.C_ID) {
+    if (queryParams && queryParams.C_ID) {
       this.fetchCollection(queryParams.C_ID);
     }
   },
