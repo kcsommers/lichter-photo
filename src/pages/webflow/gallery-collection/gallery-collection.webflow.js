@@ -7,71 +7,76 @@ import { GalleryDetails } from '../../../components/gallery-details/gallery-deta
 
 export const GalleryCollectionWF = {
 
-  collection: null,
+  // collection: null,
+
+  collectionsMap: {},
 
   init: function () {
+    // get the collection ids and map them to their corresponding containers
 
-    attachSpinner(document.querySelector('.kc-gallery-body'));
+    const galContainers = Array.from(document.querySelectorAll('div.kc-gallery') || []);
 
-    // const queryParams = getQueryParams();
+    const collectionIds = Array.from(document.querySelectorAll('div.kc-collection-id') || [])
+      .map(d => d.textContent);
 
-    const collectionIdDiv = document.querySelector('div.kc-collection-id');
-    if (!collectionIdDiv) {
+    const thumbContainers = Array.from(document.querySelectorAll('div.kc-gallery-inner') || []);
+
+    if (!galContainers || !galContainers.length || !collectionIds || !collectionIds.length || !thumbContainers || !thumbContainers.length) {
       return;
     }
 
-    const queryParams = { C_ID: collectionIdDiv.textContent };
+    collectionIds.forEach((id, i) => {
 
-    const breadCrumbs = new BreadCrumbs(queryParams, document.querySelector('.kc-breadcrumbs-container'), true);
-    breadCrumbs.create();
+      if (!id) {
+        return;
+      }
 
-    if (queryParams && queryParams.C_ID) {
-      this.fetchCollection(queryParams.C_ID);
+      attachSpinner(galContainers[i], `kc-spinner-${id}`);
+
+      this.collectionsMap[id] = { container: thumbContainers[i] };
+    });
+
+    this.fetchCollections();
+
+    // const queryParams = getQueryParams();
+    // const queryParams = { C_ID: collectionIdDiv.textContent };
+
+    // const breadCrumbs = new BreadCrumbs(queryParams, document.querySelector('.kc-breadcrumbs-container'), true);
+    // breadCrumbs.create();
+
+    // if (queryParams && queryParams.C_ID) {
+    //   this.fetchCollection(queryParams.C_ID);
+    // }
+  },
+
+  fetchCollections: function () {
+
+    const cIds = Object.keys(this.collectionsMap);
+
+    if (!cIds || !cIds.length) {
+      return;
     }
+
+    cIds.forEach((id, i) => {
+      getCollection(id)
+        .then(collection => {
+          log('COLLECTION:::: ', collection);
+
+          this.collectionsMap[id].collection = collection;
+
+          this.attachImages(id, collection.Children);
+
+          this.showGallery(id);
+        })
+        .catch(err => console.error(err))
+    });
   },
 
-  fetchCollection: function (cID) {
-    getCollection(cID)
-      .then(collection => {
-        log('COLLECTION:::: ', collection);
+  attachImages: function (cID, children) {
 
-        this.collection = collection;
+    const kcGalleryImagesDiv = this.collectionsMap[cID] && this.collectionsMap[cID].container && this.collectionsMap[cID].container.children && this.collectionsMap[cID].container.children[0];
 
-        this.attachDetails();
-
-        this.attachImages(collection.Children);
-
-        this.showGallery();
-      })
-      .catch(err => console.error(err))
-  },
-
-  showGallery: function () {
-
-    removeAllSpinners();
-
-    const container = document.querySelector('.kc-gallery-inner');
-    container.classList.remove('kc-gallery-hidden');
-
-  },
-
-  attachDetails: function () {
-
-    const details = new GalleryDetails(
-      this.collection.name,
-      `${this.collection.Total} Galleries`,
-      this.collection.description,
-      document.querySelector('.kc-gallery-details')
-    );
-
-    details.create();
-
-  },
-
-  attachImages: function (children) {
-    const thumbsContainer = document.querySelector('.kc-gallery-images');
-
-    if (!thumbsContainer || !children || !children) {
+    if (!kcGalleryImagesDiv || !children || !children.length) {
       return;
     }
 
@@ -84,18 +89,32 @@ export const GalleryCollectionWF = {
 
       containerInner.appendChild(isCollection
         ? this.createCollectionThumb(c.ChildCollection)
-        : this.createGalleryThumb(c.ChildGallery)
+        : this.createGalleryThumb(cID, c.ChildGallery)
       );
 
     });
 
-    thumbsContainer.appendChild(containerInner);
+    kcGalleryImagesDiv.appendChild(containerInner);
 
   },
 
-  createGalleryThumb(gallery) {
+  showGallery: function (cID) {
 
-    const href = constructSearchPageQuery(gallery.gallery_id, this.collection.collection_id, 'showcase');
+    const container = this.collectionsMap[cID] && this.collectionsMap[cID].container;
+
+    if (!container) {
+      return;
+    }
+
+    removeAllSpinners(`kc-spinner-${cID}`);
+
+    container.classList.remove('kc-gallery-hidden');
+
+  },
+
+  createGalleryThumb(cID, gallery) {
+
+    const href = constructSearchPageQuery(gallery.gallery_id, cID, 'showcase');
 
     const thumb = this.createThumb(gallery.KeyImage.ImageLink.link, href);
 
@@ -114,7 +133,6 @@ export const GalleryCollectionWF = {
   createCollectionThumb(collection) {
     const container = document.createElement('div');
     return container;
-
   },
 
   createThumb: function (imgSrc, href) {
@@ -158,3 +176,84 @@ export const GalleryCollectionWF = {
 }
 
 GalleryCollectionWF.init();
+
+  // showGallery: function () {
+
+  //   removeAllSpinners();
+
+  //   const container = document.querySelector('.kc-gallery-inner');
+  //   container.classList.remove('kc-gallery-hidden');
+
+  // },
+
+  // fetchCollection: function (cID) {
+  //   getCollection(cID)
+  //     .then(collection => {
+  //       log('COLLECTION:::: ', collection);
+
+  //       this.collection = collection;
+
+  //       this.attachDetails();
+
+  //       this.attachImages(collection.Children);
+
+  //       this.showGallery();
+  //     })
+  //     .catch(err => console.error(err))
+  // },
+
+  // attachDetails: function () {
+
+  //   const details = new GalleryDetails(
+  //     this.collection.name,
+  //     `${this.collection.Total} Galleries`,
+  //     this.collection.description,
+  //     document.querySelector('.kc-gallery-details')
+  //   );
+
+  //   details.create();
+
+  // },
+
+  // attachImages: function (children) {
+  //   const thumbsContainer = document.querySelector('.kc-gallery-images');
+
+  //   if (!thumbsContainer || !children || !children) {
+  //     return;
+  //   }
+
+  //   const containerInner = document.createElement('div');
+  //   containerInner.classList.add('kc-thumbs-container');
+
+  //   children.forEach(c => {
+
+  //     const isCollection = !!c.ChildCollection;
+
+  //     containerInner.appendChild(isCollection
+  //       ? this.createCollectionThumb(c.ChildCollection)
+  //       : this.createGalleryThumb(c.ChildGallery)
+  //     );
+
+  //   });
+
+  //   thumbsContainer.appendChild(containerInner);
+
+  // },
+
+// createGalleryThumb(gallery) {
+
+//   const href = constructSearchPageQuery(gallery.gallery_id, this.collection.collection_id, 'showcase');
+
+//   const thumb = this.createThumb(gallery.KeyImage.ImageLink.link, href);
+
+//   const label = this.createLabel(gallery.name, href, gallery.MediaCount.total, 'Images');
+
+
+//   const container = document.createElement('div');
+//   container.classList.add('kc-thumb-container');
+//   container.appendChild(thumb);
+//   container.appendChild(label);
+
+//   return container;
+
+// },

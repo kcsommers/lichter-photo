@@ -94,11 +94,15 @@ export const clampDescription = (mainContainer, descriptionContainer) => {
   }
 };
 
-export const attachSpinner = (container) => {
+export const attachSpinner = (container, classname) => {
 
   if (container) {
     const spinnerWrap = document.createElement('div');
     spinnerWrap.classList.add('kc-spinner-wrap');
+
+    if (classname) {
+      spinnerWrap.classList.add(classname);
+    }
 
     const spinner = document.createElement('div');
     spinner.classList.add('kc-spinner');
@@ -122,8 +126,9 @@ export const removeSpinner = (container) => {
   }
 };
 
-export const removeAllSpinners = () => {
-  const spinners = document.querySelectorAll('.kc-spinner-wrap');
+export const removeAllSpinners = (classname) => {
+  const spinners = document.querySelectorAll(`.${classname}` || '.kc-spinner-wrap');
+
 
   if (spinners) {
     spinners.forEach(s => s.remove());
