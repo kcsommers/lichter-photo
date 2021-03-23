@@ -3,75 +3,75 @@
 @import './webflow/gallery-collection/gallery-collection.webflow.scss';
 
 .kc-page {
-    // search results page
-    &.kc-search-page {
-        // remove labels under images
-        .thumbs >.image >.info {
-            display: none;
-        }
-
-        .c1title {
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        .kc-c1title-visible {
-            opacity: 1;
-        }
-
-        .dataBox {
-            >.name {
-                opacity: 0;
-                transition: opacity 0.2s ease;
-            }
-            >.kc-name-visible {
-                opacity: 1;
-            }
-        }
-
-        // remove social links
-        .social {
-            display: none;
-        }
+  // search results page
+  &.kc-search-page {
+    // remove labels under images
+    .thumbs > .image > .info {
+      display: none;
     }
 
-    // image page
-    &.kc-image-page {
-        .search_results_link {
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        .kc-search-results-link-visible {
-            opacity: 1;
-        }
-        a.psCartAddLink {
-            opacity: 0;
-            transition: opacity 0.2s ease;
-
-            &.kc-add-to-cart-visible {
-                opacity: 1;
-            }
-        }
-
-        .more {
-            >*:not(:first-child) {
-                display: none;
-            }
-        }
-
+    .c1title {
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      text-transform: none;
+    }
+    .kc-c1title-visible {
+      opacity: 1;
     }
 
-    &.kc-search-page-page {
-        .search_box_advanced {
-            fieldset:nth-child(3),
-            fieldset:nth-child(4),
-            fieldset:nth-child(5),
-            fieldset:nth-child(6),
-            fieldset:nth-child(7),
-            fieldset:nth-child(8),
-            fieldset:nth-child(9),
-            fieldset:nth-child(10) {
-                display: none;
-            }
-        }
+    .dataBox {
+      > .name {
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+      > .kc-name-visible {
+        opacity: 1;
+      }
     }
+
+    // remove social links
+    .social {
+      display: none;
+    }
+  }
+
+  // image page
+  &.kc-image-page {
+    .search_results_link {
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .kc-search-results-link-visible {
+      opacity: 1;
+    }
+    a.psCartAddLink {
+      opacity: 0;
+      transition: opacity 0.2s ease;
+
+      &.kc-add-to-cart-visible {
+        opacity: 1;
+      }
+    }
+
+    .more {
+      > *:not(:first-child) {
+        display: none;
+      }
+    }
+  }
+
+  &.kc-search-page-page {
+    .search_box_advanced {
+      fieldset:nth-child(3),
+      fieldset:nth-child(4),
+      fieldset:nth-child(5),
+      fieldset:nth-child(6),
+      fieldset:nth-child(7),
+      fieldset:nth-child(8),
+      fieldset:nth-child(9),
+      fieldset:nth-child(10) {
+        display: none;
+      }
+    }
+  }
 }

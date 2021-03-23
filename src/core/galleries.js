@@ -2,6 +2,8 @@ export const Galleries = {
   LIMITED_EDITION: 'G0000BLnFwimsp4o',
 
   LIFESTYLE: 'lifestyle',
+
+  SEARCH_RESULTS: 'SEARCH_RESULTS',
 };
 
 // View all tag should always be last
@@ -30,6 +32,20 @@ export const GalleryFilters = {
       keywords: ['showcase', 'featured'],
       isSpecial: false,
     };
+  },
+  [Galleries.SEARCH_RESULTS]: {
+    filters: [
+      {
+        name: 'View All',
+        keyword: '',
+      },
+      {
+        name: 'Featured',
+        keyword: 'featured',
+      },
+    ],
+    keywords: ['featured'],
+    isSpecial: false,
   },
   [Galleries.LIFESTYLE]: (firstName, lastName) => {
     return {

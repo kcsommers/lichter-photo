@@ -1,7 +1,6 @@
 export const SITE_URL = 'https://lichterphoto.photoshelter.com';
 
 export const getQueryParams = (query) => {
-
   const toParse = query || window.location.search;
 
   if (toParse) {
@@ -15,11 +14,10 @@ export const getQueryParams = (query) => {
     });
 
     return result;
-
   }
 
   return null;
-}
+};
 
 export const log = (...args) => {
   if (process.env.NODE_ENV === 'development') {
@@ -70,7 +68,6 @@ export const parsePath = (path) => {
 };
 
 export const parseHref = (path) => {
-
   if (path) {
     const pathSplit = path.split('/');
     const cID = pathSplit[pathSplit.length - 1] || 'root_site';
@@ -80,4 +77,4 @@ export const parseHref = (path) => {
     return { cID, gID, name };
   }
   return '';
-}
+};

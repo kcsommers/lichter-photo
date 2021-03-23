@@ -8,7 +8,6 @@ import { SearchResults } from './pages/photoshelter/search-results/search-result
 import { Archive } from './pages/photoshelter/archive/archive.photoshelter';
 
 const loadScript = () => {
-
   const pathStart = 'https://lichterphoto.photoshelter.com';
 
   const path = window.location.pathname.replace(pathStart, '');
@@ -39,7 +38,6 @@ const loadScript = () => {
   }
 
   if (path.startsWith('/gallery-collection')) {
-
     GalleryCollection.init();
 
     // import(
@@ -49,11 +47,10 @@ const loadScript = () => {
     //   .then(m => m.GalleryCollection.init())
     //   .catch(err => console.error(err));
 
-    return 'gallery-collection'
+    return 'gallery-collection';
   }
 
   if (path.startsWith('/search-page')) {
-
     Search.init();
 
     // import(
@@ -67,7 +64,6 @@ const loadScript = () => {
   }
 
   if (path.startsWith('/search') && !path.startsWith('/search-page')) {
-
     SearchResults.init();
 
     // import(
@@ -81,7 +77,6 @@ const loadScript = () => {
   }
 
   if (path.startsWith('/archive')) {
-
     Archive.init();
 
     // import(
@@ -98,23 +93,18 @@ const loadScript = () => {
 };
 
 (function () {
-
   const page = loadScript();
 
-  log('PAGE:::: ', page)
+  log('PAGE:::: ', page);
 
   if (page) {
-
     const html = document.querySelector('html');
     if (html) {
       html.classList.add('kc-page');
       html.classList.add(`kc-${page}-page`);
     }
-
-  }
-  else {
+  } else {
     log('Removing QUERY_DATA from storage');
     localStorage.removeItem(Storage.QUERY_DATA);
   }
-
 })();
