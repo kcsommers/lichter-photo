@@ -13,9 +13,9 @@ export const constructSearchPageQuery = (
 
   return `${SITE_URL}/search?I_DSC=${searchTerm}&${
     isAnd || 'I_DSC_AND=t'
-  }&G_ID=${gID}&C_ID=${cID}&_ACT=usrSearch${offset ? '&' + offset : ''}${
-    bqH ? '&_bqH=' + bqH : ''
-  }`;
+  }&I_SORT=FILE_NAME&G_ID=${gID}&C_ID=${cID}&_ACT=usrSearch${
+    offset ? '&' + offset : ''
+  }${bqH ? '&_bqH=' + bqH : ''}`;
 };
 
 export const constructSearchTerm = (
