@@ -6,7 +6,7 @@ export const Search = {
 
     document.addEventListener('DOMContentLoaded', () => {
       // set sort by to Date
-      this.setSortBy();
+      // this.setSortBy();
     });
   },
 

@@ -38,6 +38,7 @@ const loadScript = () => {
   }
 
   if (path.startsWith('/gallery-collection')) {
+    localStorage.removeItem(Storage.SEARCH_DETAILS);
     GalleryCollection.init();
 
     // import(
@@ -51,6 +52,7 @@ const loadScript = () => {
   }
 
   if (path.startsWith('/search-page')) {
+    localStorage.removeItem(Storage.SEARCH_DETAILS);
     Search.init();
 
     // import(
@@ -77,6 +79,7 @@ const loadScript = () => {
   }
 
   if (path.startsWith('/archive')) {
+    localStorage.removeItem(Storage.SEARCH_DETAILS);
     Archive.init();
 
     // import(
@@ -89,6 +92,7 @@ const loadScript = () => {
     return 'archive';
   }
 
+  localStorage.removeItem(Storage.SEARCH_DETAILS);
   return '';
 };
 

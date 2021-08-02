@@ -48,9 +48,9 @@ export const parsePath = (path) => {
     cID = queryDataParsed.cID;
   }
   if (searchTermMatch) {
-    searchTerm = searchTermMatch[2];
+    searchTerm = decodeURIComponent(searchTermMatch[2] || '');
   } else if (queryDataParsed && queryDataParsed.searchTerm) {
-    searchTerm = queryDataParsed.searchTerm;
+    searchTerm = decodeURIComponent(queryDataParsed.searchTerm || '');
   }
   if (isAndMatch) {
     isAnd = isAndMatch[0];

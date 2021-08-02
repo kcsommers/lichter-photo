@@ -7,7 +7,12 @@ import {
   getCollectionRootPath,
   getGalleryInfo,
 } from '../../../core/helpers/photoshelter-api';
-import { SITE_URL, log, parsePath } from '../../../core/helpers/utils';
+import {
+  SITE_URL,
+  log,
+  parsePath,
+  getQueryParams,
+} from '../../../core/helpers/utils';
 import { Storage } from '../../../core/storage';
 import { Galleries } from './../../../core/galleries';
 
@@ -31,12 +36,24 @@ export const SearchResults = {
       if (this.queryParams.gID) {
         // update pagination arrows
         this.setPagination();
-
         // set gallery details
         this.setGalleryDetails();
-
         this.setBreadCrumbs();
       } else {
+        // if coming from search-page, and this is page 1,
+        // store the query params in local storage to be used on
+        // image details page
+        const queryParams = getQueryParams();
+        if (!queryParams._bqO || +queryParams._bqO === 0) {
+          localStorage.setItem(
+            Storage.SEARCH_DETAILS,
+            JSON.stringify({
+              searchTerm: queryParams.I_DSC,
+              href: window.location.href,
+            })
+          );
+        }
+
         // update the search title to include the search term
         this.updateSearchResultsTitle();
 
@@ -62,14 +79,26 @@ export const SearchResults = {
 
   updateSearchResultsTitle: function () {
     const c1Title = document.querySelector('.c1title');
-    if (c1Title) {
-      c1Title.textContent = `RESULTS FOR: "${
-        this.queryParams && this.queryParams.searchTerm
-          ? this.queryParams.searchTerm.replace(/\+/g, ' ')
-          : ''
-      }"`;
-      c1Title.classList.add('kc-c1title-visible');
+    if (!c1Title) {
+      return;
     }
+    let searchDetails = localStorage.getItem(Storage.SEARCH_DETAILS);
+    if (!searchDetails) {
+      return;
+    }
+    searchDetails = JSON.parse(searchDetails);
+    // create a link with with url back to first page
+    const _titleLink = document.createElement('a');
+    _titleLink.href = searchDetails.href;
+    _titleLink.classList.add('kc-c1title-link');
+    _titleLink.textContent = `${
+      searchDetails.searchTerm
+        ? searchDetails.searchTerm.replace(/\+/g, ' ')
+        : ''
+    }`;
+    c1Title.textContent = 'RESULTS FOR: ';
+    c1Title.appendChild(_titleLink);
+    c1Title.classList.add('kc-c1title-visible');
   },
 
   removeBracketsFromTotal: function () {

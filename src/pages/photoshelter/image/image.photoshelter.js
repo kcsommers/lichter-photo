@@ -1,43 +1,68 @@
-import { Storage } from "../../../core/storage";
-import { getCollectionRootPath, getGalleryInfo } from "../../../core/helpers/photoshelter-api";
-import { constructSearchPageQuery, createBreadCrumbs } from "../../../core/helpers/dom";
-import { SITE_URL, log } from "../../../core/helpers/utils";
-
+import { Storage } from '../../../core/storage';
+import {
+  getCollectionRootPath,
+  getGalleryInfo,
+} from '../../../core/helpers/photoshelter-api';
+import {
+  constructSearchPageQuery,
+  createBreadCrumbs,
+} from '../../../core/helpers/dom';
+import { SITE_URL, log } from '../../../core/helpers/utils';
 
 export const Image = {
-
   queryData: null,
 
   init: function () {
-
-
     const queryDataFromStorage = localStorage.getItem(Storage.QUERY_DATA);
-
     this.queryData = queryDataFromStorage && JSON.parse(queryDataFromStorage);
-
     document.addEventListener('DOMContentLoaded', () => {
-
       this.centerNav();
 
       if (this.queryData) {
-
         this.setBreadCrumbs();
-
         // this.setBackLink();
-      }
-      else {
+      } else {
         const backLink = document.querySelector('.search_results_link');
         if (backLink) {
-          backLink.classList.add('kc-search-results-link-visible')
+          backLink.classList.add('kc-search-results-link-visible');
         }
       }
 
       this.setAddToCartText();
-
       this.reorderShit();
 
+      // if there is a search url in storage
+      // add a breadcrumb back to results page
+      const searchDetails = localStorage.getItem(Storage.SEARCH_DETAILS);
+      if (!searchDetails) {
+        return;
+      }
+      this.appendBackToResultsLink(JSON.parse(searchDetails));
     });
+  },
 
+  appendBackToResultsLink: function (searchDetails) {
+    const dataBox = document.querySelector('.dataBox');
+    if (!dataBox) {
+      return;
+    }
+
+    const breadcrumbsWrap = document.createElement('div');
+    breadcrumbsWrap.classList.add('kc-breadcrumbs-wrap');
+    dataBox.prepend(breadcrumbsWrap);
+    createBreadCrumbs(
+      [
+        {
+          text: `Back to Results for: ${searchDetails.searchTerm.replace(
+            /\+/g,
+            ' '
+          )}`,
+          path: searchDetails.href,
+        },
+      ],
+      breadcrumbsWrap,
+      dataBox
+    );
   },
 
   setAddToCartText: function () {
@@ -65,29 +90,29 @@ export const Image = {
   },
 
   setBreadCrumbs: function () {
-
-    log('[setBreadCrumbs]:::: ', this.queryData)
+    log('[setBreadCrumbs]:::: ', this.queryData);
 
     const dataBox = document.querySelector('.dataBox');
-
     if (!dataBox) {
       return;
     }
 
     const breadcrumbsWrap = document.createElement('div');
     breadcrumbsWrap.classList.add('kc-breadcrumbs-wrap');
-
     dataBox.prepend(breadcrumbsWrap);
 
-    Promise.all([getGalleryInfo(this.queryData.gID), getCollectionRootPath(this.queryData.cID)])
+    Promise.all([
+      getGalleryInfo(this.queryData.gID),
+      getCollectionRootPath(this.queryData.cID),
+    ])
       .then(([galInfo, collectionPath]) => {
         const galInfoParsed = galInfo && JSON.parse(galInfo).data;
-        const collectionPathParsed = collectionPath && JSON.parse(collectionPath).data;
+        const collectionPathParsed =
+          collectionPath && JSON.parse(collectionPath).data;
 
-        log('PATH INFO:::: ', galInfoParsed, collectionPathParsed)
+        log('PATH INFO:::: ', galInfoParsed, collectionPathParsed);
 
         if (galInfoParsed && collectionPathParsed) {
-
           const galPath = constructSearchPageQuery(
             this.queryData.gID,
             this.queryData.cID,
@@ -100,24 +125,26 @@ export const Image = {
           const galCrumb = { text: galInfoParsed.Gallery.name, path: galPath };
           const breadcrumbs = [galCrumb];
 
-          collectionPathParsed.RootPath.forEach(p => {
-
-            if (p.collection_id === 'root_hidden' || p.collection_id === 'root_site') {
+          collectionPathParsed.RootPath.forEach((p) => {
+            if (
+              p.collection_id === 'root_hidden' ||
+              p.collection_id === 'root_site'
+            ) {
               return;
             }
 
-            breadcrumbs.push({ text: p.name, path: `${SITE_URL}/gallery-collection/${p.name}/${p.collection_id}` });
+            breadcrumbs.push({
+              text: p.name,
+              path: `${SITE_URL}/gallery-collection/${p.name}/${p.collection_id}`,
+            });
           });
 
           createBreadCrumbs(breadcrumbs, breadcrumbsWrap, dataBox);
-
-        }
-        else {
+        } else {
           dataBox.removeChild(breadcrumbsWrap);
         }
-
       })
-      .catch(err => {
+      .catch((err) => {
         dataBox.removeChild(breadcrumbsWrap);
         console.error(err);
       });
@@ -128,11 +155,14 @@ export const Image = {
 
     if (this.queryData && this.queryData.gID && this.queryData.cID) {
       getGalleryInfo(this.queryData.gID)
-        .then(res => {
-
+        .then((res) => {
           if (res) {
             const resParsed = JSON.parse(res);
-            if (resParsed.data && resParsed.data.Gallery && resParsed.data.Gallery.name) {
+            if (
+              resParsed.data &&
+              resParsed.data.Gallery &&
+              resParsed.data.Gallery.name
+            ) {
               // Update title with gallery name
               if (backLink) {
                 backLink.textContent = resParsed.data.Gallery.name;
@@ -146,7 +176,7 @@ export const Image = {
             }
           }
         })
-        .catch(err => console.error(err));
+        .catch((err) => console.error(err));
     }
   },
 
@@ -155,19 +185,22 @@ export const Image = {
     const dl = document.querySelector('dl');
 
     if (more && dl) {
-
       const printBtn = document.querySelector('.add_to_cart_link');
       const lightboxBtn = document.querySelector('.add_to_lightbox_link');
 
       const description = document.querySelector('.description');
 
-      const filenameLabel = Array.from(dl.children).find(c => c.textContent === 'Filename');
+      const filenameLabel = Array.from(dl.children).find(
+        (c) => c.textContent === 'Filename'
+      );
       const filename = filenameLabel && filenameLabel.nextElementSibling;
 
       const keywordsList = document.querySelector('.keywords-list');
       const keywordsLabel = keywordsList && keywordsList.previousElementSibling;
 
-      const galleriesLabel = Array.from(dl.children).find(c => c.textContent === 'Contained in galleries');
+      const galleriesLabel = Array.from(dl.children).find(
+        (c) => c.textContent === 'Contained in galleries'
+      );
       const galleries = galleriesLabel && galleriesLabel.nextElementSibling;
 
       const newContainer = document.createElement('div');
@@ -241,9 +274,7 @@ export const Image = {
       }
 
       more.prepend(newContainer);
-
     }
-
 
     // const printBtn = document.querySelector('.add_to_cart_link');
     // const lightboxBtn = document.querySelector('.add_to_lightbox_link');
@@ -272,6 +303,5 @@ export const Image = {
     //   more.prepend(printBtn);
     //   more.prepend(descriptionDiv);
     // }
-  }
-
+  },
 };
