@@ -13,9 +13,9 @@ export const constructSearchPageQuery = (
 
   return `${SITE_URL}/search?I_DSC=${searchTerm}&${
     isAnd || 'I_DSC_AND=t'
-  }&I_SORT=FILE_NAME&G_ID=${gID}&C_ID=${cID}&_ACT=usrSearch${
-    offset ? '&' + offset : ''
-  }${bqH ? '&_bqH=' + bqH : ''}`;
+  }&G_ID=${gID}&C_ID=${cID}&_ACT=usrSearch${offset ? '&' + offset : ''}${
+    bqH ? '&_bqH=' + bqH : ''
+  }`;
 };
 
 export const constructSearchTerm = (
@@ -106,8 +106,8 @@ export const appendFilterTags = function (
 
 export const clampDescription = (mainContainer, descriptionContainer) => {
   if (mainContainer && descriptionContainer) {
-    const descriptionHeight = descriptionContainer.getBoundingClientRect()
-      .height;
+    const descriptionHeight =
+      descriptionContainer.getBoundingClientRect().height;
 
     if (descriptionHeight > 70) {
       descriptionContainer.classList.add('kc-description');
